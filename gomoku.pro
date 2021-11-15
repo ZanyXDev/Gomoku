@@ -23,13 +23,13 @@ include(gitversion.pri)
 #don't use precompiled headers https://www.kdab.com/beware-of-qt-module-wide-includes/
 
 SOURCES += \
-    src/main.cpp 
+    src/main.cpp
 
-#HEADERS += 
+#HEADERS +=
 
-#RESOURCES += \
+RESOURCES += \
+     qml.qrc
 #    resources.qrc \
-#    qml.qrc \
 #    images.qrc
 
 #TRANSLATIONS += \
