@@ -33,9 +33,9 @@ HEADERS += \
     src/tilemodel.h
 
 RESOURCES += \
-     qml.qrc
+     qml.qrc \
+     images.qrc
 #    resources.qrc \
-#    images.qrc
 
 #TRANSLATIONS += \
 #    i18n/five_in_a_row_ru_RU.ts

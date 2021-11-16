@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/images/background.jpg</file>
+        <file>res/images/tile_background.png</file>
+    </qresource>
+</RCC>
