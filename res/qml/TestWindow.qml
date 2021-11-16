@@ -29,54 +29,51 @@ Window {
                 opacity: 0.5
             }
         }
+        Grid {
+            // Board is 15x15 tiles
+            id: boardGrid
+            rows: 5
+            columns: 5
+            spacing: 2
+            x:20
+            y:20
+            Repeater {
+                model: tileModel
+                Item{
+                    id:tile
+                    width: 80
+                    height: 80
+                    Image {
 
-    }
-
-
-    Grid {
-        // Board is 15x15 tiles
-        id: boardGrid
-        rows: 5
-        columns: 5
-        spacing: 2
-        x:20
-        y:20
-        Repeater {
-            model: tileModel
-            Item{
-                id:tile
-                width: 80
-                height: 80
-                Image {
-
-                    source: "qrc:/res/images/tile_background.png"
-                    //                    opacity: {
-                    //                        if (modelData.highlighted)
-                    //                            return 1.0
-                    //                        else
-                    //                            return 0.6
-                    //                    }
-                    //                    Behavior on opacity {
-                    //                        enabled: gameData.moves !== 0
-                    //                        NumberAnimation {
-                    //                            properties:"opacity"
-                    //                            duration: 500
-                    //                        }
-                    //                    }
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    //enabled: !modelData.hasButton1 && !modelData.hasButton2
-                    onClicked: {
-                        //explosion.explode()
-                        console.log("index:"+index)
+                        source: "qrc:/res/images/tile_background.png"
+                        //                    opacity: {
+                        //                        if (modelData.highlighted)
+                        //                            return 1.0
+                        //                        else
+                        //                            return 0.6
+                        //                    }
+                        //                    Behavior on opacity {
+                        //                        enabled: gameData.moves !== 0
+                        //                        NumberAnimation {
+                        //                            properties:"opacity"
+                        //                            duration: 500
+                        //                        }
+                        //                    }
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        //enabled: !modelData.hasButton1 && !modelData.hasButton2
+                        onClicked: {
+                            //explosion.explode()
+                            console.log("index:"+index)
+                        }
                     }
                 }
             }
         }
+
+
     }
-
-
 
     LoggingCategory {
         id: category
