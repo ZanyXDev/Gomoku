@@ -16,6 +16,9 @@ CONFIG += c++17 resources_big cmdline qml_debug
 
 include(gitversion.pri)
 
+# Additional import path used to resolve QML modules in Qt Creator's code model
+QML_IMPORT_PATH += $$PWD
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -23,9 +26,11 @@ include(gitversion.pri)
 #don't use precompiled headers https://www.kdab.com/beware-of-qt-module-wide-includes/
 
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/tilemodel.cpp
 
-#HEADERS +=
+HEADERS += \
+    src/tilemodel.h
 
 RESOURCES += \
      qml.qrc
@@ -34,11 +39,6 @@ RESOURCES += \
 
 #TRANSLATIONS += \
 #    i18n/five_in_a_row_ru_RU.ts
-
-# Default rules for deployment.
-
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH += $$PWD
 
 # Setting the application icon
 #win32: RC_ICONS = res/icons/five_in_a_row-qt.ico # On Windows
@@ -79,3 +79,6 @@ QML_IMPORT_PATH += $$PWD
         #    $$PWD/android/3rdparty/openssl/arm64-v8a/libssl_1_1.so
 # }
 #}
+
+
+# Default rules for deployment.
