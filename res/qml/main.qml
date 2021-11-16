@@ -12,31 +12,46 @@ Window {
     width: Settings.screenWidth
 
     flags: Qt.Dialog
-    ListModel {
-        id: tileModel
 
-        ListElement {
-            color: "orange"
-            text: "first"
-        }
-        ListElement {
-            color: "skyblue"
-            text: "second"
-        }
+    TileModel {
+        id: tileModel
+    }
+    // *** Game View ***
+    GameView {
+        id: gameView
+        // Gameview is disabled when gameViewHider is shown
+        enabled: gameViewHider.state === "hide"
     }
 
-    Grid {
-        columns: 19
-        spacing: 19
-        Repeater{
-            model: tileModel
-            Rectangle {
-                color: model.color
-                width: 20;
-                height: 20
+    // *** Game View Hider ***
+    Rectangle {
+        id: gameViewHider
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.7
+
+        states: [
+            State {
+                name: "hide"
+                when: menuPanel.state === "hide"
+                PropertyChanges {
+                    target: gameViewHider
+                    opacity: 0.0
+                }
+            }
+        ]
+
+        transitions: Transition {
+            NumberAnimation {
+                properties: "opacity"
+                duration: 400
             }
         }
-
     }
+    // *** Main Menu panel ***
+    MenuPanel {
+        id: menuPanel
+    }
+
 }
 

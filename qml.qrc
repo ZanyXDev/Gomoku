@@ -3,5 +3,8 @@
         <file>res/qml/qmldir</file>
         <file>res/qml/settings.qml</file>
         <file>res/qml/main.qml</file>
+        <file>res/qml/TileModel.qml</file>
+        <file>res/qml/GameView.qml</file>
+        <file>res/qml/MenuPanel.qml</file>
     </qresource>
 </RCC>
