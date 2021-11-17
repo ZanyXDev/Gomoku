@@ -19,6 +19,7 @@ include(gitversion.pri)
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH += $$PWD
 
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -26,10 +27,12 @@ QML_IMPORT_PATH += $$PWD
 #don't use precompiled headers https://www.kdab.com/beware-of-qt-module-wide-includes/
 
 SOURCES += \
+    src/backend.cpp \
     src/main.cpp \
     src/tilemodel.cpp
 
 HEADERS += \
+    src/backend.h \
     src/tilemodel.h
 
 RESOURCES += \
