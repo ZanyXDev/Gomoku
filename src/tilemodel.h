@@ -11,8 +11,7 @@ struct TileItem
 {
     bool whiteStone;
     bool blackStone;
-    bool emptyStone;
-    QString testString;
+    bool highLighted;
 };
 
 class TileModel : public QAbstractListModel
@@ -23,8 +22,7 @@ public:
     enum Roles {
         WhiteStoneRole = Qt::UserRole + 1,
         BlackStoneRole,
-        EmptyStoneRole,
-        TestStringRole
+        HighLightedRole
     };
     Q_ENUM(Roles)
     explicit TileModel(QObject *parent = nullptr);

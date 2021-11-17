@@ -4,11 +4,10 @@ TileModel::TileModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     // Set names to the role name hash container (QHash<int, QByteArray>)
-    // model.whitestone, model.blackstone, model.emptystone, model.highlighted
+    // model.whitestone, model.blackstone, model.highlighted
     m_roleNames[WhiteStoneRole] = "whitestone";
     m_roleNames[BlackStoneRole] = "blackstone";
-    m_roleNames[EmptyStoneRole] = "emptystone";
-    m_roleNames[TestStringRole] = "teststring";
+    m_roleNames[HighLightedRole] = "highlighted";
 }
 
 
@@ -42,8 +41,7 @@ QVariant TileModel::data(const QModelIndex &index, int role) const
     qDebug() << Q_FUNC_INFO << row << role;
     qDebug() << tItem.whiteStone
              << tItem.blackStone
-             << tItem.emptyStone
-             << tItem.testString;
+             << tItem.highLighted;
 #endif
 
     switch (role) {
@@ -51,10 +49,8 @@ QVariant TileModel::data(const QModelIndex &index, int role) const
         return tItem.whiteStone;
     case BlackStoneRole:
         return tItem.blackStone;
-    case EmptyStoneRole:
-        return tItem.emptyStone;
-    case TestStringRole:
-        return tItem.testString;
+    case HighLightedRole:
+        return tItem.highLighted;
     default:
         break;
     }
@@ -79,11 +75,8 @@ bool TileModel::setData(const QModelIndex &index, const QVariant &value, int rol
     case BlackStoneRole:
         tItem.blackStone = value.toBool();
         break;
-    case EmptyStoneRole:
-        tItem.emptyStone = value.toBool();
-        break;
-    case TestStringRole:
-        tItem.testString = value.toString();
+    case HighLightedRole:
+        tItem.highLighted = value.toBool();
         break;
     default:
         return false;
