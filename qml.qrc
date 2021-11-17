@@ -6,5 +6,6 @@
         <file>res/qml/TileModel.qml</file>
         <file>res/qml/GameView.qml</file>
         <file>res/qml/MenuPanel.qml</file>
+        <file>res/qml/TestWindow.qml</file>
     </qresource>
 </RCC>

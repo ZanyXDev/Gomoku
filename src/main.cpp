@@ -12,6 +12,8 @@
 #include <QtQml/QQmlContext>
 #include <QtQuickControls2/QQuickStyle>
 
+#include "tilemodel.h"
+#include "backend.h"
 
 int main(int argc, char *argv[])
 {
@@ -42,13 +44,32 @@ int main(int argc, char *argv[])
     app.installTranslator(&myappTranslator);
 
     QQuickStyle::setStyle(QStringLiteral("Universal"));
+#ifdef QT_DEBUG
+    const QUrl url(QStringLiteral("qrc:/res/qml/TestWindow.qml"));
+#else
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
+#endif
+    TileModel tileModel;
+    BackEnd backend;
+
+#ifdef QT_DEBUG
+
+    for (int i=0;i <225;i++){
+        if (i == 7){
+            tileModel.append({false,true,true});
+        }
+        tileModel.append({false,false,false});
+    }
+    qDebug() << tileModel.rowCount(QModelIndex());
+#endif
+
+    qmlRegisterType<BackEnd>("io.github.zanyxdev", 1, 0, "BackEnd");
 
     //qmlRegisterType<Tile>("gameCore", 1, 0, "Tile");
     QQmlApplicationEngine engine;
 
     QQmlContext* context = engine.rootContext();
-    //context->setContextProperty("gameData", &gameData);
+    context->setContextProperty("tileModel", &tileModel);
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
