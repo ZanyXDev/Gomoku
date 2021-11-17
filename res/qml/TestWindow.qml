@@ -3,6 +3,8 @@ import QtQuick.Controls 2.12
 import QtQuick.Window 2.12
 //import QtQuick.Layouts 1.12
 
+import io.github.zanyxdev 1.0
+
 Window {
     id: mainWindow
     title: "Gomoku"
@@ -12,6 +14,10 @@ Window {
     width: Settings.screenWidth
 
     flags: Qt.Dialog
+
+    BackEnd {
+        id: backend
+    }
 
     Item {
         id: gameViewBord
@@ -32,8 +38,8 @@ Window {
         Grid {
             // Board is 15x15 tiles
             id: boardGrid
-            rows: 5
-            columns: 5
+            rows: 15
+            columns: 15
             spacing: 2
             x:20
             y:20
@@ -41,24 +47,26 @@ Window {
                 model: tileModel
                 Item{
                     id:tile
-                    width: 80
-                    height: 80
-                    Image {
+                    width: 40
+                    height: 40
 
+                    Image {
+                        fillMode: Image.Stretch;
+                        anchors.fill: parent;
                         source: "qrc:/res/images/tile_background.png"
-                        //                    opacity: {
-                        //                        if (modelData.highlighted)
-                        //                            return 1.0
-                        //                        else
-                        //                            return 0.6
-                        //                    }
-                        //                    Behavior on opacity {
-                        //                        enabled: gameData.moves !== 0
-                        //                        NumberAnimation {
-                        //                            properties:"opacity"
-                        //                            duration: 500
-                        //                        }
-                        //                    }
+                        opacity: {
+                            if (model.highlighted)
+                                return 1.0
+                            else
+                                return 0.6
+                        }
+                        Behavior on opacity {
+                            enabled: backend.moves != 0
+                            NumberAnimation {
+                                properties:"opacity"
+                                duration: 500
+                            }
+                        }
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -66,6 +74,7 @@ Window {
                         onClicked: {
                             //explosion.explode()
                             console.log("index:"+index)
+                             console.log ("highlighted:"+model.highlighted)
                         }
                     }
                 }
