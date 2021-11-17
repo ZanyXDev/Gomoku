@@ -13,6 +13,7 @@
 #include <QtQuickControls2/QQuickStyle>
 
 #include "tilemodel.h"
+#include "backend.h"
 
 int main(int argc, char *argv[])
 {
@@ -49,18 +50,20 @@ int main(int argc, char *argv[])
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
 #endif
     TileModel tileModel;
+    BackEnd backend;
+
 #ifdef QT_DEBUG
-    for (int i=0;i <25;i++){
-        tileModel.append({false,false,true,QString("%1").arg(i)});
+
+    for (int i=0;i <225;i++){
+        if (i == 7){
+            tileModel.append({false,true,true});
+        }
+        tileModel.append({false,false,false});
     }
     qDebug() << tileModel.rowCount(QModelIndex());
 #endif
-    /**
-     * @brief qmlRegisterType<TileModel>("io.github.zanyxdev", 1, 0, "TileModel");
-     * register the type TileModel under the url "io.github.zanyxdev"
-     * in version 1.0 under the name "TileModel"
-     */
-    //qmlRegisterType<TileModel>("io.github.zanyxdev", 1, 0, "TileModel");
+
+    qmlRegisterType<BackEnd>("io.github.zanyxdev", 1, 0, "BackEnd");
 
     //qmlRegisterType<Tile>("gameCore", 1, 0, "Tile");
     QQmlApplicationEngine engine;
