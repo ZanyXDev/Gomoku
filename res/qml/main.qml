@@ -7,51 +7,67 @@ Window {
     id: mainWindow
     title: "Gomoku"
     visible: true
+    color:"black"
 
-    height: Settings.screenHeight
-    width: Settings.screenWidth
+    property bool largeScreen: Screen.desktopAvailableHeight >= 900
+    property double scale: width / 1600
+
+    width: largeScreen  ? Settings.screenWidth : 920
+    height: largeScreen ? Settings.screenHeight : 690
 
     flags: Qt.Dialog
 
-    TileModel {
-        id: tileModel
-    }
     // *** Game View ***
     GameView {
         id: gameView
-        // Gameview is disabled when gameViewHider is shown
-        enabled: gameViewHider.state === "hide"
-    }
-
-    // *** Game View Hider ***
-    Rectangle {
-        id: gameViewHider
         anchors.fill: parent
-        color: "black"
-        opacity: 0.7
-
-        states: [
-            State {
-                name: "hide"
-                when: menuPanel.state === "hide"
-                PropertyChanges {
-                    target: gameViewHider
-                    opacity: 0.0
-                }
-            }
-        ]
-
-        transitions: Transition {
-            NumberAnimation {
-                properties: "opacity"
-                duration: 400
-            }
+        Rectangle{
+            width: Screen.pixelDensity * 10
+            height: width
+            color:"red"
         }
     }
-    // *** Main Menu panel ***
-    MenuPanel {
-        id: menuPanel
+
+    Button{
+        x:100
+        text: "Quit"
+        id:testAnimButton
+        onClicked: {
+            quitAnimation.start()
+        }
     }
 
+    Image {
+        id: backGround
+        z: -1
+        source: "qrc:/res/images/background.jpg"
+        anchors.fill: parent
+        fillMode: Image.Stretch
+    }
+    SequentialAnimation{
+        id: quitAnimation
+        running: false
+        PauseAnimation {
+            duration: 200
+        }
+        ParallelAnimation{
+            PropertyAnimation{
+                target: gameView; property: "opacity"
+                duration: 750; from: 1.0; to: 0.0
+
+            }
+            PropertyAnimation {
+                target: backGround; property: "opacity"
+                duration: 900; from: 1.0; to: 0.0
+            }
+        }
+        ScriptAction {
+            script: Qt.quit()
+        }
+    }
+    Component.onCompleted: {
+        title.state = "shown"
+        mainPageLoadAnimation.start()
+    }
 }
 
