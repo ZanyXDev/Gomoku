@@ -7,5 +7,6 @@
         <file>res/qml/GameView.qml</file>
         <file>res/qml/MenuPanel.qml</file>
         <file>res/qml/TestWindow.qml</file>
+        <file>res/qml/customitem/RectangleWithGradient.qml</file>
     </qresource>
 </RCC>
