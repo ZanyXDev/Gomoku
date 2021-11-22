@@ -37,7 +37,8 @@ HEADERS += \
 
 RESOURCES += \
      qml.qrc \
-     images.qrc
+     images.qrc \
+     fonts.qrc
 #    resources.qrc \
 
 #TRANSLATIONS += \
