@@ -45,23 +45,27 @@ Window {
                 color: 'transparent'
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
+                Layout.leftMargin: 2
+                Layout.topMargin: 2
+                Layout.bottomMargin: 2
                 Layout.minimumWidth: Settings.tileWidth * 15
                 Text {
                     anchors.centerIn: parent
                     text: parent.width + 'x' + parent.height
                 }
             }
-            Rectangle {
+            RectangleWithGradient {
                 id:controlField
-                border{
-                    color: Qt.lighter("gray")
-                    width:1
-                }
+
                 color: 'transparent'
+
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.minimumWidth: Settings.controlPanelWidth
+                Layout.rightMargin: 2
+                Layout.topMargin: 2
+                Layout.bottomMargin: 2
+
                 Text {
                     anchors.centerIn: parent
                     text: parent.width + 'x' + parent.height
