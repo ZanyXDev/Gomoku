@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>res/images/background.jpg</file>
         <file>res/images/tile_background.png</file>
+        <file>res/images/tile_white.png</file>
+        <file>res/images/tile_black.png</file>
     </qresource>
 </RCC>
