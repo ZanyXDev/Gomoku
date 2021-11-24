@@ -8,7 +8,8 @@ QtObject {
     property int menuDelay: 500
 
     property int largeFont: 96
-    property int smallFont: 14
+    property int middleFont: 32
+    property int smallFont: 16
 
     property int toolButtonHeight: 32
 

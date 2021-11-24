@@ -6,10 +6,11 @@ import QtQuick.Controls.Material 2.4
 import "customitem"
 
 Window {
-    id: mainWindow
+    id:appWnd
 
     property bool largeScreen: Screen.desktopAvailableHeight >= 90
     property double scale: width / 1600
+    property string localFont: _localFont.name
 
     title: "Gomoku"
     visible: true
@@ -56,7 +57,6 @@ Window {
             }
             RectangleWithGradient {
                 id:controlField
-
                 color: 'transparent'
 
                 Layout.fillWidth: true
@@ -65,21 +65,68 @@ Window {
                 Layout.rightMargin: 2
                 Layout.topMargin: 2
                 Layout.bottomMargin: 2
+                GroupBox{
+                     id:infoPanel
+                    anchors.top: parent
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    ColumnLayout{
 
-                Text {
-                    anchors.centerIn: parent
-                    text: parent.width + 'x' + parent.height
+                        anchors.fill: parent
+                        spacing: 2
+
+                        Text {
+                            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+                            font.family: appWnd.localFont
+                            font.pointSize: Settings.smallFont
+                            smooth: true
+                            color: "black"
+                            text: qsTr("Time")
+                        }
+                        Text {
+                            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+                            font.family: appWnd.localFont
+                            font.pointSize: Settings.middleFont
+                            smooth: true
+                            color: "gray"
+                            style: Text.Outline
+                            styleColor: "black"
+                            text: "00:00"//gameData.gameTime
+                        }
+                        Text {
+                            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+                            font.family: appWnd.localFont
+                            font.pointSize: Settings.smallFont
+                            smooth: true
+                            color: "black"
+                            text: qsTr("Moves")
+                        }
+                        Text {
+                            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+                            font.family: appWnd.localFont
+                            font.pointSize: Settings.middleFont
+                            smooth: true
+                            color: "gray"
+                            style: Text.Outline
+                            styleColor: "black"
+                            text: "13"//gameData.moves
+                        }
+                    }
                 }
-            }
-        }
-    }
+                Button{
+                    id:testAnimButton
+anchors.top: infoPanel.bottom
+                    text: qsTr("Quit")
 
-    Button{
-        x:100
-        text: "Quit"
-        id:testAnimButton
-        onClicked: {
-            quitAnimation.start()
+
+                    onClicked: {
+                        quitAnimation.start()
+                    }
+                }
+
+            }
         }
     }
 
@@ -123,7 +170,7 @@ Window {
         title.state = "shown"
         // mainPageLoadAnimation.start()
         console.log(Screen.desktopAvailableHeight);
-        console.log("Size "+ mainWindow.width +"x"+  mainWindow.height)
+        console.log("Size "+ appWnd.width +"x"+  appWnd.height)
     }
 }
 
