@@ -7,61 +7,117 @@ import "customitem"
 
 RectangleWithGradient {
     id:controlField
-    GroupBox{
+    property string currentPlayerName:_currentPlayeName.text
+
+    ColumnLayout{
         id:infoPanel
-        anchors.top: parent
+        spacing: 2
         anchors.horizontalCenter: parent.horizontalCenter
-        ColumnLayout{
 
+        Text {
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+            font.family: appWnd.localFont
+            font.pointSize: Settings.middleFont
+            smooth: true
+            color: "black"
+            style: Text.Outline
+            text: qsTr("Time")
+        }
+        Text {
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+            font.family: appWnd.localFont
+            font.pointSize: Settings.middleFont
+            smooth: true
+            color: "gray"
+            style: Text.Outline
+            styleColor: "black"
+            text: "00:00"//gameData.gameTime
+        }
+        Text {
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+            font.family: appWnd.localFont
+            font.pointSize: Settings.middleFont
+            smooth: true
+            color: "black"
+            style: Text.Outline
+            text: qsTr("Moves")
+        }
+        Text {
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+            font.family: appWnd.localFont
+            font.pointSize: Settings.middleFont
+            smooth: true
+            color: "gray"
+            style: Text.Outline
+            styleColor: "black"
+            text: "999"//gameData.moves
+        }
+        Text {
+            id:_currentPlayeName
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+            font.family: appWnd.localFont
+            font.pointSize: Settings.middleFont
+            smooth: true
+            color: "gray"
+            style: Text.Outline
+            styleColor: "black"
+            text: "Player"//gameData.moves
+        }
+    }
+    Flipable {
+        id: flipableArea
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: infoPanel.bottom
+
+        width: 96
+        height: 96
+
+        property bool flipped: false
+
+        front:Image{
+            source: "qrc:/res/images/tile_black.png";
+            anchors.centerIn: parent
+        }
+
+        back: Image {
+            source: "qrc:/res/images/tile_white.png";
+            anchors.centerIn: parent
+        }
+
+        transform: Rotation {
+            id: rotation
+            origin.x: flipableArea.width/2
+            origin.y: flipableArea.height/2
+            axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+            angle: 0    // the default angle
+        }
+
+        states: State {
+            name: "back"
+            PropertyChanges { target: rotation; angle: 180 }
+            when: flipableArea.flipped
+        }
+
+        transitions: Transition {
+            NumberAnimation { target: rotation; property: "angle"; duration: 4000 }
+        }
+
+        MouseArea {
             anchors.fill: parent
-            spacing: 2
-
-            Text {
-                Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
-                font.family: appWnd.localFont
-                font.pointSize: Settings.smallFont
-                smooth: true
-                color: "black"
-                text: qsTr("Time")
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
-
-                font.family: appWnd.localFont
-                font.pointSize: Settings.middleFont
-                smooth: true
-                color: "gray"
-                style: Text.Outline
-                styleColor: "black"
-                text: "00:00"//gameData.gameTime
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
-
-                font.family: appWnd.localFont
-                font.pointSize: Settings.smallFont
-                smooth: true
-                color: "black"
-                text: qsTr("Moves")
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
-
-                font.family: appWnd.localFont
-                font.pointSize: Settings.middleFont
-                smooth: true
-                color: "gray"
-                style: Text.Outline
-                styleColor: "black"
-                text: "13"//gameData.moves
-            }
+            onClicked: flipableArea.flipped = !flipableArea.flipped
         }
     }
     Button{
         id:testAnimButton
-        anchors.top: infoPanel.bottom
-        text: qsTr("Quit")
+        anchors.bottom: controlField.bottom
 
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: qsTr("Quit")
 
         onClicked: {
             quitAnimation.start()
