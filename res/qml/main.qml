@@ -1,28 +1,40 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick.Controls 2.12 as QQC2
 import QtQuick.Controls.Material 2.4
+import Qt.labs.settings 1.0
+
 import "customitem"
 import io.github.zanyxdev 1.0
 
 
-Window {
+QQC2.ApplicationWindow {
     id:appWnd
 
-    property bool largeScreen: Screen.desktopAvailableHeight >= 90
-    property double scale: width / 1600
+    Settings {
+        id: appThemeSettings
+        category: "Theme"
+        // Set dark theme to be default for the very first launch (when settings file is NOT available)
+        property int materialTheme: Material.Dark
+    }
+
+    Settings {
+        id: settings
+        //property alias wireless: wirelessSwitch.checked
+        property int gameFieldWidth: 690
+        property int controlPanelWidth: 180
+        property bool largeScreen: Screen.desktopAvailableHeight >= 900
+        property double scale: appWnd.width / 1600
+    }
+
     property string localFont: _localFont.name
 
     title: "Gomoku"
     visible: true
 
-
-    Material.theme: Material.Dark
-    Material.accent: Material.Purple
-
-    width: largeScreen  ? Settings.screenWidth : 920
-    height: largeScreen ? Settings.screenHeight : 690
+    width: settings.largeScreen  ? 1024 : 920
+    height: settings.largeScreen ? 768  : 690
 
     flags: Qt.Dialog
 
@@ -30,10 +42,12 @@ Window {
         id: _localFont;
         source: "qrc:/res/fonts/DroidSansFallback.ttf"
     }
+
     BackEnd{
         id:backend
     }
-    // *** Game View ***
+
+    ///*** Game View ***
     GameView {
         id: gameView
         anchors.fill: parent
@@ -55,23 +69,30 @@ Window {
                 Layout.leftMargin: 2
                 Layout.topMargin: 2
                 Layout.bottomMargin: 2
-                Layout.minimumWidth: Settings.tileWidth * 15
-                Text {
+                Layout.minimumWidth: settings.gameFieldWidth
+
+                QQC2.Control {
                     anchors.centerIn: parent
-                    text: parent.width + 'x' + parent.height
-                }
-                Text {
-                    text: backend.moves
+                    width: 100
+                    height: width
+                    background: Rectangle {
+                        color: Material.background
+                        border.color: Material.foreground
+                    }
 
+                    QQC2.Label {
+                        anchors.centerIn: parent
+                        text: parent.width + 'x' + parent.height
+                        font.pixelSize: 12
+                    }
                 }
-
             }
             ControlField {
                 id: controlField
                 Layout.bottomMargin: 2
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.minimumWidth: Settings.controlPanelWidth
+                Layout.minimumWidth: settings.controlPanelWidth
                 Layout.rightMargin: 2
                 Layout.topMargin: 2
             }
@@ -116,10 +137,17 @@ Window {
 
     Component.onCompleted: {
         title.state = "shown"
+        // On launch, read theme from settings file
+        appWnd.Material.theme = appThemeSettings.materialTheme
         // mainPageLoadAnimation.start()
         console.log(Screen.desktopAvailableHeight);
         console.log("Size "+ appWnd.width +"x"+  appWnd.height)
         console.log("moves:"+backend.moves)
     }
+    Component.onDestruction:{
+        // On close, write theme to settings file
+       // appThemeSettings.materialTheme = appWnd.Material.theme
+    }
+
 }
 
