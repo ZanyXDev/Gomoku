@@ -6,8 +6,9 @@ import QtQuick.Controls.Material 2.4
 import "customitem"
 
 RectangleWithGradient {
-    id:controlField
-    property string currentPlayerName:_currentPlayeName.text
+    id:root
+    property string currentPlayerName:_currentPlayerName.text
+    property bool playerTurn: flipableArea.flipped
 
     ColumnLayout{
         id:infoPanel
@@ -33,7 +34,7 @@ RectangleWithGradient {
             color: "gray"
             style: Text.Outline
             styleColor: "black"
-            text: "00:00"//gameData.gameTime
+            text: backend.gameTime
         }
         Text {
             Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
@@ -46,6 +47,7 @@ RectangleWithGradient {
             text: qsTr("Moves")
         }
         Text {
+            id:_moves
             Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
 
             font.family: appWnd.localFont
@@ -54,10 +56,10 @@ RectangleWithGradient {
             color: "gray"
             style: Text.Outline
             styleColor: "black"
-            text: "999"//gameData.moves
+            text: backend.moves
         }
         Text {
-            id:_currentPlayeName
+            id:_currentPlayerName
             Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
 
             font.family: appWnd.localFont
@@ -66,7 +68,12 @@ RectangleWithGradient {
             color: "gray"
             style: Text.Outline
             styleColor: "black"
-            text: "Player"//gameData.moves
+            text: {
+                if (backend.playerSide)
+                     qsTr("Human")
+                else
+                    qsTr("AI")
+            }
         }
     }
     Flipable {
