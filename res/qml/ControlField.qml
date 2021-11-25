@@ -112,16 +112,46 @@ RectangleWithGradient {
             onClicked: flipableArea.flipped = !flipableArea.flipped
         }
     }
-    Button{
-        id:testAnimButton
-        anchors.bottom: controlField.bottom
-
+    FineButton {
+        id: buttonUndo
+        anchors.top: flipableArea.bottom
+        anchors.bottomMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
+
+        height: 60
+        width: parent.width - 20
+
+        fontName: appWnd.localFont
+        fontSize: Settings.middleFont
+
+        disabled: !backend.moves
+
+        text:  qsTr("Undo")
+        opacity: backend.gameOn
+
+        onClicked: {
+            backend.undoTile()
+        }
+    }
+    FineButton{
+        id:testAnimButton
+
+        anchors.bottom: root.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 10
+
+        height: 60
+        width: parent.width - 20
+
+        fontName: appWnd.localFont
+        fontSize: Settings.middleFont
+
         text: qsTr("Quit")
 
         onClicked: {
-            quitAnimation.start()
+            flipableArea.flipped = !flipableArea.flipped
+            //quitAnimation.start()
+            backend.setGameOn(true)
         }
     }
-
 }
