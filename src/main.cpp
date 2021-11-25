@@ -41,8 +41,8 @@ int main(int argc, char *argv[]) {
   myappTranslator.load(QLocale(), QLatin1String("gomoku"), QLatin1String("_"),
                        QLatin1String(":/i18n"));
   app.installTranslator(&myappTranslator);
-
-  QQuickStyle::setStyle(QStringLiteral("Universal"));
+  /// TODO Global fix usage Material theme and color
+  QQuickStyle::setStyle(QStringLiteral("Material"));
 
   const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
 

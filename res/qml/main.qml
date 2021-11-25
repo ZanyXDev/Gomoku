@@ -16,7 +16,10 @@ Window {
 
     title: "Gomoku"
     visible: true
-    Material.theme: Material.Light
+
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Purple
 
     width: largeScreen  ? Settings.screenWidth : 920
     height: largeScreen ? Settings.screenHeight : 690
