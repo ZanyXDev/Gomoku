@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.4
 import "customitem"
+import io.github.zanyxdev 1.0
+
 
 Window {
     id:appWnd
@@ -25,7 +27,9 @@ Window {
         id: _localFont;
         source: "qrc:/res/fonts/DroidSansFallback.ttf"
     }
-
+    BackEnd{
+        id:backend
+    }
     // *** Game View ***
     GameView {
         id: gameView
@@ -40,7 +44,6 @@ Window {
                 border{
                     color: Qt.lighter("gray")
                     width:1
-
                 }
 
                 color: 'transparent'
@@ -54,6 +57,11 @@ Window {
                     anchors.centerIn: parent
                     text: parent.width + 'x' + parent.height
                 }
+                Text {
+                    text: backend.moves
+
+                }
+
             }
             ControlField {
                 id: controlField
@@ -63,7 +71,6 @@ Window {
                 Layout.minimumWidth: Settings.controlPanelWidth
                 Layout.rightMargin: 2
                 Layout.topMargin: 2
-                color: 'transparent'
             }
         }
     }
@@ -109,6 +116,7 @@ Window {
         // mainPageLoadAnimation.start()
         console.log(Screen.desktopAvailableHeight);
         console.log("Size "+ appWnd.width +"x"+  appWnd.height)
+        console.log("moves:"+backend.moves)
     }
 }
 
