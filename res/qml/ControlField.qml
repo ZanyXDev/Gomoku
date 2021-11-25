@@ -7,8 +7,6 @@ import "customitem"
 
 RectangleWithGradient {
     id:root
-    property string currentPlayerName:_currentPlayerName.text
-    property bool playerTurn: flipableArea.flipped
 
     ColumnLayout{
         id:infoPanel
@@ -70,7 +68,7 @@ RectangleWithGradient {
             styleColor: "black"
             text: {
                 if (backend.playerSide)
-                     qsTr("Human")
+                    qsTr("Human")
                 else
                     qsTr("AI")
             }
@@ -119,46 +117,64 @@ RectangleWithGradient {
             onClicked: flipableArea.flipped = !flipableArea.flipped
         }
     }
-    FineButton {
-        id: buttonUndo
+    ColumnLayout{
+        id:buttonAndSwitchPanel
+        spacing: 2
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: flipableArea.bottom
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: parent.horizontalCenter
 
-        height: 60
-        width: parent.width - 20
+        ToggleSwitch{
+            id:sw1
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.leftMargin: 2
+            Layout.topMargin: 2
+            Layout.bottomMargin: 2
+            Layout.minimumWidth: Settings.controlPanelWidth - 20
 
-        fontName: appWnd.localFont
-        fontSize: Settings.middleFont
+            textOn: "2D"
+            textOff: "3D"
 
-        disabled: !backend.moves
-
-        text:  qsTr("Undo")
-        opacity: backend.gameOn
-
-        onClicked: {
-            backend.undoTile()
         }
-    }
-    FineButton{
-        id:testAnimButton
+        FineButton {
+            id: buttonUndo
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
 
-        anchors.bottom: root.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottomMargin: 10
+            height: 60
+            width: parent.width - 20
 
-        height: 60
-        width: parent.width - 20
+            fontName: appWnd.localFont
+            fontSize: Settings.middleFont
 
-        fontName: appWnd.localFont
-        fontSize: Settings.middleFont
+            disabled: !backend.moves
 
-        text: qsTr("Quit")
+            text:  qsTr("Undo")
+            opacity: backend.gameOn
 
-        onClicked: {
-            flipableArea.flipped = !flipableArea.flipped
-            //quitAnimation.start()
-            backend.setGameOn(true)
+            onClicked: {
+                backend.undoTile()
+                console
+            }
+        }
+        FineButton{
+            id:testAnimButton
+
+            Layout.alignment: Qt.AlignHCenter| Qt.AlignVCenter
+
+            height: 60
+            width: parent.width - 20
+
+            fontName: appWnd.localFont
+            fontSize: Settings.middleFont
+
+            text: qsTr("Quit")
+
+            onClicked: {
+                flipableArea.flipped = !flipableArea.flipped
+                //quitAnimation.start()
+                backend.setGameOn(true)
+            }
         }
     }
 }

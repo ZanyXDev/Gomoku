@@ -10,5 +10,6 @@
         <file>res/qml/customitem/RectangleWithGradient.qml</file>
         <file>res/qml/ControlField.qml</file>
         <file>res/qml/customitem/FineButton.qml</file>
+        <file>res/qml/customitem/ToggleSwitch.qml</file>
     </qresource>
 </RCC>
