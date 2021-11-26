@@ -46,6 +46,8 @@ QQC2.ApplicationWindow {
     width: settings.largeScreen  ? 1024 : 920
     height: settings.largeScreen ? 768  : 690
     Material.theme: themeSettings.materialTheme
+    Material.accent: Material.color(Material.Indigo)
+
     flags: Qt.Dialog
 
     FontLoader {
@@ -58,7 +60,7 @@ QQC2.ApplicationWindow {
     }
 
     ///*** Game View ***
-    GameView {
+    Item {
         id: gameView
         anchors.fill: parent
         RowLayout {
