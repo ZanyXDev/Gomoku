@@ -8,16 +8,14 @@ QQC2.Pane {
 
     property bool flat: control.enabled && control.Material.elevation > 0
     property int radius: 4
+    property string bgrColor:Material.backgroundColor
 
-    //Material.background: "transparent"
     background: Rectangle {
         border.color: flat ? Qt.rgba(0,0,0,0.2) : "transparent"
-        color: control.Material.backgroundColor
+        color: bgrColor
+
         radius: control.Material.elevation > 0 ? control.radius : 0
-        //        gradient: Gradient{
-        //            GradientStop { position : 0 ;  color: "#33FFFFFF" } //33 ~ 20% transporent white color
-        //            GradientStop { position : 1.0; color: "#e5e5e5e5" }
-        //        }
+
         layer.enabled: flat
         layer.effect: ElevationEffect {
             elevation: control.Material.elevation
