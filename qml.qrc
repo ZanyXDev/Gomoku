@@ -4,7 +4,6 @@
         <file>res/qml/customitem/AppSettings.qml</file>
         <file>res/qml/main.qml</file>
         <file>res/qml/TileModel.qml</file>
-        <file>res/qml/GameView.qml</file>
         <file>res/qml/MenuPanel.qml</file>
         <file>res/qml/TestWindow.qml</file>
         <file>res/qml/customitem/RectangleWithGradient.qml</file>
