@@ -65,12 +65,34 @@ Item{
         height: background.height - 4
         width: background.width / 2
         bgrColor: Material.accentColor
+
+        QQC2.Label{
+            id: switchText
+            font.family: fontName
+            font.pointSize: fontSize
+
+            color: Material.foreground
+            text: textOff
+        }
     }
     MouseArea {
         anchors.fill: parent
         onClicked: toggle()
     }
-
+    states: [
+        State {
+            name: "on"
+            PropertyChanges { target: knob; x: background.width - knob.width - 2 }
+            PropertyChanges { target: toggleswitch; on: true }
+            PropertyChanges { target: switchText; text: textOn }
+        },
+        State {
+            name: "off"
+            PropertyChanges { target: knob; x: 2 }
+            PropertyChanges { target: toggleswitch; on: false }
+            PropertyChanges { target: switchText; text: textOff }
+        }
+    ]
 }
 /**
 Item {
