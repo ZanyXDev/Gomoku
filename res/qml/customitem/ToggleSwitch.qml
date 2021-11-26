@@ -1,5 +1,78 @@
 import QtQuick 2.12
+import QtQuick.Controls 2.12 as QQC2
+import QtQuick.Controls.Material 2.4
 
+Item{
+    function toggle() {
+        console.log("toggleswitch.state"+toggleswitch.state)
+        if (toggleswitch.state === "on")
+            toggleswitch.state = "off"
+        else toggleswitch.state = "on"
+        console.log("toggleswitch.state"+toggleswitch.state)
+    }
+
+    id:toggleswitch
+    property bool on: false
+    property string fontName: _fontName
+    property int fontSize: _fontSize
+    property alias textOn: switchTextOn.text
+    property alias textOff: switchTextOff.text
+
+    implicitWidth: switchTextOn.implicitWidth + switchTextOff.implicitWidth +10
+    implicitHeight: switchTextOn.implicitHeight + switchTextOff.implicitHeight +10
+
+    width: implicitWidth
+    height: implicitHeight
+
+    state: "off"
+
+    MaterialCard {
+        id:background
+        Material.elevation: 4
+
+        anchors.fill: parent
+
+        radius: 3
+        QQC2.Label{
+            id: switchTextOff
+            font.family: fontName
+            font.pointSize: fontSize
+
+            color: Material.foreground
+            text: textOff
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+        QQC2.Label{
+            id: switchTextOn
+            font.family: fontName
+            font.pointSize: fontSize
+
+            color: Material.foreground
+            text: textOn
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+    }
+    MaterialCard {
+        id:knob
+        Material.elevation: 6
+        radius:5
+        x: 2
+        y: 2
+        height: background.height - 4
+        width: background.width / 2
+        bgrColor: Material.accentColor
+    }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: toggle()
+    }
+
+}
+/**
 Item {
     id: toggleswitch
     property bool on: false
@@ -132,6 +205,7 @@ Item {
     ]
 
     transitions: Transition {
-        NumberAnimation { properties: "x"; /*easing: "easeInOutQuad";*/ duration: 200 }
+        NumberAnimation { properties: "x"; /*easing: "easeInOutQuad";* duration: 200 }
     }
 }
+*/
