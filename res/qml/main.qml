@@ -13,7 +13,7 @@ QQC2.ApplicationWindow {
     id:appWnd
 
     Settings {
-        id: appThemeSettings
+        id: themeSettings
         category: "Theme"
         // Set dark theme to be default for the very first launch (when settings file is NOT available)
         property int materialTheme: Material.Dark
@@ -24,10 +24,20 @@ QQC2.ApplicationWindow {
         //property alias wireless: wirelessSwitch.checked
         property int gameFieldWidth: 690
         property int controlPanelWidth: 180
+
         property bool largeScreen: Screen.desktopAvailableHeight >= 900
         property double scale: appWnd.width / 1600
-    }
 
+        property int largeFont: 64
+        property int middleFont: 32
+        property int smallFont: 16
+
+    }
+    // We need the settings object both here and in other page,
+    // so for convenience, we declare it as a property of the root object so that
+    // it will be available to all of the QML files that we load.
+    property alias settings: settings
+    property alias themeSetting: themeSettings
     property string localFont: _localFont.name
 
     title: "Gomoku"
@@ -35,7 +45,7 @@ QQC2.ApplicationWindow {
 
     width: settings.largeScreen  ? 1024 : 920
     height: settings.largeScreen ? 768  : 690
-
+    Material.theme: themeSettings.materialTheme
     flags: Qt.Dialog
 
     FontLoader {
@@ -59,7 +69,7 @@ QQC2.ApplicationWindow {
             Rectangle {
                 id:gameField
                 border{
-                    color: Qt.lighter("gray")
+                    color: Material.color(Material.Grey)
                     width:1
                 }
 
@@ -67,6 +77,7 @@ QQC2.ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.leftMargin: 2
+                Layout.rightMargin: 2
                 Layout.topMargin: 2
                 Layout.bottomMargin: 2
                 Layout.minimumWidth: settings.gameFieldWidth
@@ -82,19 +93,25 @@ QQC2.ApplicationWindow {
 
                     QQC2.Label {
                         anchors.centerIn: parent
+                        color: Material.foreground
                         text: parent.width + 'x' + parent.height
                         font.pixelSize: 12
                     }
+
                 }
             }
             ControlField {
                 id: controlField
-                Layout.bottomMargin: 2
+
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.minimumWidth: settings.controlPanelWidth
+
+                Layout.leftMargin: 2
                 Layout.rightMargin: 2
                 Layout.topMargin: 2
+                Layout.bottomMargin: 2
+
+                Layout.minimumWidth: settings.controlPanelWidth
             }
         }
     }
@@ -137,17 +154,11 @@ QQC2.ApplicationWindow {
 
     Component.onCompleted: {
         title.state = "shown"
-        // On launch, read theme from settings file
-        appWnd.Material.theme = appThemeSettings.materialTheme
+
         // mainPageLoadAnimation.start()
-        console.log(Screen.desktopAvailableHeight);
+        console.log("Theme:"+themeSettings.materialTheme);
         console.log("Size "+ appWnd.width +"x"+  appWnd.height)
         console.log("moves:"+backend.moves)
     }
-    Component.onDestruction:{
-        // On close, write theme to settings file
-       // appThemeSettings.materialTheme = appWnd.Material.theme
-    }
-
 }
 
