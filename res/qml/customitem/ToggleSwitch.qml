@@ -17,7 +17,7 @@ Item{
     height: implicitHeight
 
     state: "off"
- signal
+
     MaterialCard {
         id:background
         Material.elevation: 4
