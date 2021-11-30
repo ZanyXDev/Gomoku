@@ -4,5 +4,7 @@
         <file>res/images/tile_background.png</file>
         <file>res/images/tile_white.png</file>
         <file>res/images/tile_black.png</file>
+        <file>res/images/outline_volume_off_black_24dp.png</file>
+        <file>res/images/outline_volume_up_black_24dp.png</file>
     </qresource>
 </RCC>
