@@ -3,14 +3,6 @@ import QtQuick.Controls 2.12 as QQC2
 import QtQuick.Controls.Material 2.4
 
 Item{
-    function toggle() {
-        console.log("toggleswitch.state"+toggleswitch.state)
-        if (toggleswitch.state === "on")
-            toggleswitch.state = "off"
-        else toggleswitch.state = "on"
-        console.log("toggleswitch.state"+toggleswitch.state)
-    }
-
     id:toggleswitch
     property bool on: false
     property string fontName: _fontName
@@ -25,7 +17,7 @@ Item{
     height: implicitHeight
 
     state: "off"
-
+ signal
     MaterialCard {
         id:background
         Material.elevation: 4
@@ -35,25 +27,36 @@ Item{
         radius: 3
         QQC2.Label{
             id: switchTextOff
-            font.family: fontName
-            font.pointSize: fontSize
 
-            color: Material.foreground
-            text: textOff
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-        }
-        QQC2.Label{
-            id: switchTextOn
+
             font.family: fontName
             font.pointSize: fontSize
 
             color: Material.foreground
-            text: textOn
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
+            text: textOff
+        }
+        QQC2.Label{
+            id: switchTextOn
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+
+            font.family: fontName
+            font.pointSize: fontSize
+
+            color: Material.foreground
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
+            text: textOn
         }
     }
     MaterialCard {
@@ -72,12 +75,22 @@ Item{
             font.pointSize: fontSize
 
             color: Material.foreground
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
             text: textOff
         }
     }
     MouseArea {
         anchors.fill: parent
+        drag.target: knob;
+        drag.axis: "XAxis"
+        drag.minimumX: 2
+        drag.maximumX: background.width - knob.width - 2
+
         onClicked: toggle()
+        onReleased: dorelease() //when user drag knob
     }
     states: [
         State {
@@ -93,6 +106,24 @@ Item{
             PropertyChanges { target: switchText; text: textOff }
         }
     ]
+
+    function toggle() {
+        console.log("toggleswitch.state"+toggleswitch.state)
+        if (toggleswitch.state === "on")
+            toggleswitch.state = "off"
+        else toggleswitch.state = "on"
+        console.log("toggleswitch.state"+toggleswitch.state)
+    }
+
+    function dorelease() {
+        if (knob.x === 2 && toggleswitch.state == "off")
+            return
+
+        if (knob.x === background.width - knob.width - 2 && toggleswitch.state == "on")
+            return
+
+        toggle()
+    }
 }
 /**
 Item {
