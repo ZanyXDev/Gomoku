@@ -21,6 +21,7 @@ ColumnLayout{
 
         Layout.preferredWidth: 1
         Layout.preferredHeight: 1
+
         Material.elevation: 6
 
         radius: 4
@@ -30,6 +31,27 @@ ColumnLayout{
         id:boxTimeMoveScore
 
         Layout.preferredHeight: 60
+
+        component InfoLabel:QQC2.Label{
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+
+            color: Material.foreground
+
+            font.family: fontFamily
+            font.pointSize: fontSize
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
+            Component.onCompleted: {
+                console.log("font.pointSize: "+font.pointSize)
+            }
+        }
+
+        InfoLabel {
+            text: qsTr("Time")
+        }
 
     }
     ProportionalRect {
