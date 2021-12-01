@@ -22,7 +22,7 @@ QQC2.ApplicationWindow {
     Settings {
         id: settings
         //property alias wireless: wirelessSwitch.checked
-        property int gameFieldWidth: 690
+        property int gameFieldSize: 690
         property int controlPanelWidth: 180
 
         property bool largeScreen: Screen.desktopAvailableHeight >= 900
@@ -45,6 +45,8 @@ QQC2.ApplicationWindow {
 
     width: settings.largeScreen  ? 1024 : 920
     height: settings.largeScreen ? 768  : 690
+    minimumHeight: settings.gameFieldSize +8
+    minimumWidth: settings.gameFieldSize+settings.controlPanelWidth +12
     Material.theme: themeSettings.materialTheme
     Material.accent: Material.color(Material.Indigo)
 
@@ -66,18 +68,17 @@ QQC2.ApplicationWindow {
         RowLayout {
             id: layout
             anchors.fill: parent
-            spacing: 0
+            spacing: 2
             MaterialCard {
                 id:gameField
                 Material.elevation: 6
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.leftMargin: 10
-                Layout.rightMargin: 5
-                Layout.topMargin: 10
-                Layout.bottomMargin: 10
-                Layout.minimumWidth: settings.gameFieldWidth
+                Layout.leftMargin: 2
+                Layout.topMargin: 2
+                Layout.bottomMargin: 2
+                Layout.minimumWidth: settings.gameFieldSize
                 QQC2.Control {
                     anchors.centerIn: parent
                     width: 100
@@ -97,57 +98,57 @@ QQC2.ApplicationWindow {
                 }
             }
 
-            ControlField {
-                id: controlField
-
+            ControlPanel {
+                id: controlPanel
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                Layout.leftMargin: 5
-                Layout.rightMargin: 10
-                Layout.topMargin: 10
-                Layout.bottomMargin: 10
+                Layout.topMargin: 2
+                Layout.bottomMargin: 2
+                Layout.rightMargin: 2
 
-                Layout.minimumWidth: settings.controlPanelWidth
+                Layout.preferredWidth: settings.controlPanelWidth
+
+                spacing: 2
             }
         }
     }
 
-//    Image {
-//        id: backGround
-//        z: -1
-//        source: "qrc:/res/images/background.jpg"
-//        anchors.fill: parent
-//        fillMode: Image.Stretch
-//    }
+    //    Image {
+    //        id: backGround
+    //        z: -1
+    //        source: "qrc:/res/images/background.jpg"
+    //        anchors.fill: parent
+    //        fillMode: Image.Stretch
+    //    }
 
-//    SequentialAnimation{
-//        id: quitAnimation
-//        running: false
-//        PauseAnimation {
-//            duration: 200
-//        }
-//        ParallelAnimation{
-//            PropertyAnimation{
-//                target: gameView;
-//                property: "opacity"
-//                duration: 750;
-//                from: 1.0;
-//                to: 0.0
+    //    SequentialAnimation{
+    //        id: quitAnimation
+    //        running: false
+    //        PauseAnimation {
+    //            duration: 200
+    //        }
+    //        ParallelAnimation{
+    //            PropertyAnimation{
+    //                target: gameView;
+    //                property: "opacity"
+    //                duration: 750;
+    //                from: 1.0;
+    //                to: 0.0
 
-//            }
-//            PropertyAnimation {
-//                target: backGround;
-//                property: "opacity"
-//                duration: 900;
-//                from: 1.0;
-//                to: 0.0
-//            }
-//        }
-//        ScriptAction {
-//            script: Qt.quit()
-//        }
-//    }
+    //            }
+    //            PropertyAnimation {
+    //                target: backGround;
+    //                property: "opacity"
+    //                duration: 900;
+    //                from: 1.0;
+    //                to: 0.0
+    //            }
+    //        }
+    //        ScriptAction {
+    //            script: Qt.quit()
+    //        }
+    //    }
 
     Component.onCompleted: {
         title.state = "shown"
