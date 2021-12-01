@@ -12,16 +12,23 @@ import io.github.zanyxdev 1.0
 ColumnLayout{
     id:controlPanel
 
+    property string  fontFamily: "Helvetica"
+    property int fontSize: 16
+
     component ProportionalRect: MaterialCard {
         Layout.fillHeight: true
         Layout.fillWidth: true
+
         Layout.preferredWidth: 1
         Layout.preferredHeight: 1
         Material.elevation: 6
+
         radius: 4
     }
+
     ProportionalRect {
         id:boxTimeMoveScore
+
         Layout.preferredHeight: 60
 
     }
