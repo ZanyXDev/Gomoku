@@ -110,6 +110,8 @@ QQC2.ApplicationWindow {
                 Layout.preferredWidth: settings.controlPanelWidth
 
                 spacing: 2
+                fontFamily:appWnd.localFont
+                fontSize: settings.middleFont
             }
         }
     }
