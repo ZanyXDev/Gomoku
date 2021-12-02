@@ -25,31 +25,28 @@ ColumnLayout{
         Material.elevation: 6
 
         radius: 4
+
+    }
+
+    component InfoLabel:QQC2.Label{
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+
+        color: Material.foreground
+
+        font.family: fontFamily
+        font.pointSize: fontSize
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        padding: 6
     }
 
     ProportionalRect {
         id:boxTimeMoveScore
 
-        Layout.preferredHeight: 90
-
-        component InfoLabel:QQC2.Label{
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.left: parent.left
-
-            color: Material.foreground
-
-            font.family: fontFamily
-            font.pointSize: fontSize
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
-            padding: 6
-
-            Component.onCompleted: {
-                console.log("font.pointSize: "+font.pointSize)
-            }
-        }
+        Layout.preferredHeight: 100
 
         InfoLabel {
             id:textTime
@@ -74,6 +71,7 @@ ColumnLayout{
 
             text: qsTr("Moves")
         }
+
         InfoLabel {
             id:valueMoves
 
@@ -83,6 +81,7 @@ ColumnLayout{
 
             text: backend.moves
         }
+
         InfoLabel {
             id:textScore
 
@@ -90,6 +89,7 @@ ColumnLayout{
 
             text: qsTr("Score")
         }
+
         InfoLabel {
             id:valueScore
 
@@ -100,16 +100,71 @@ ColumnLayout{
             text: qsTr("0000")//backend.score
         }
     }
+
     ProportionalRect {
         id:boxPlayerOrAI
-        Layout.preferredHeight: 40
+        Layout.preferredHeight: 60
 
+        InfoLabel {
+            id:textPlayerName
+
+            text: qsTr("AI-1")//backend.playerName
+            padding: 10
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.log("textPlayerName.onClick")
+                    flipable.flipped = !flipable.flipped
+                }
+            }
+        }
+
+        Flipable {
+            id: flipable
+            property bool flipped: false
+
+            anchors.top: textPlayerName.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            front: Image {
+                width: 64
+                height: 64
+                source: "qrc:/res/images/tile_black.png";
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            back: Image {
+                width: 64
+                height: 64
+                source: "qrc:/res/images/tile_white.png";
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            transform: Rotation {
+                id: rotation
+                origin.x: flipable.width/2
+                origin.y: flipable.height/2
+                axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                angle: 0    // the default angle
+            }
+
+            states: State {
+                name: "back"
+                PropertyChanges { target: rotation; angle: 180 }
+                when: flipable.flipped
+            }
+
+            transitions: Transition {
+                NumberAnimation { target: rotation; property: "angle"; duration: 4000 }
+            }
+        }
     }
+
     ProportionalRect {
         id:boxButtons
         Layout.preferredHeight: 120
 
     }
+
     Component.onCompleted: {
         console.log("controlPanel.width:"+controlPanel.width)
         console.log("controlPanel.height :"+controlPanel.height )
