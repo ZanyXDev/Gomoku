@@ -52,9 +52,53 @@ ColumnLayout{
         }
 
         InfoLabel {
+            id:textTime
+
             text: qsTr("Time")
         }
 
+        InfoLabel {
+            id:valueTime
+
+            anchors.top: textTime.bottom
+
+            font.pointSize: fontSize - 8
+
+            text: backend.gameTime
+        }
+
+        InfoLabel {
+            id:textMoves
+
+            anchors.top: valueTime.bottom
+
+            text: qsTr("Moves")
+        }
+        InfoLabel {
+            id:valueMoves
+
+            anchors.top: textMoves.bottom
+
+            font.pointSize: fontSize - 8
+
+            text: backend.moves
+        }
+        InfoLabel {
+            id:textScore
+
+            anchors.top: valueMoves.bottom
+
+            text: qsTr("Score")
+        }
+        InfoLabel {
+            id:valueScore
+
+            anchors.top: textScore.bottom
+
+            font.pointSize: fontSize - 8
+
+            text: qsTr("0000")//backend.score
+        }
     }
     ProportionalRect {
         id:boxPlayerOrAI
