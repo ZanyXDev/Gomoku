@@ -30,7 +30,7 @@ ColumnLayout{
     ProportionalRect {
         id:boxTimeMoveScore
 
-        Layout.preferredHeight: 60
+        Layout.preferredHeight: 90
 
         component InfoLabel:QQC2.Label{
             anchors.horizontalCenter: parent.horizontalCenter
@@ -43,6 +43,8 @@ ColumnLayout{
 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+
+            padding: 6
 
             Component.onCompleted: {
                 console.log("font.pointSize: "+font.pointSize)
