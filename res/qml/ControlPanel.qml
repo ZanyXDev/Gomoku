@@ -3,6 +3,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12 as QQC2
 import QtQuick.Controls.Material 2.4
+import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 
 import "customitem"
@@ -43,10 +44,11 @@ ColumnLayout{
         padding: 6
     }
 
+
     ProportionalRect {
         id:boxTimeMoveScore
 
-        Layout.preferredHeight: 100
+        Layout.preferredHeight: 120
 
         InfoLabel {
             id:textTime
@@ -103,58 +105,27 @@ ColumnLayout{
 
     ProportionalRect {
         id:boxPlayerOrAI
-        Layout.preferredHeight: 60
+        Layout.preferredHeight: 80
 
         InfoLabel {
             id:textPlayerName
-
             text: qsTr("AI-1")//backend.playerName
             padding: 10
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    console.log("textPlayerName.onClick")
-                    flipable.flipped = !flipable.flipped
-                }
-            }
         }
 
-        Flipable {
-            id: flipable
-            property bool flipped: false
-
+        FineButton{
+            id:undoButton
             anchors.top: textPlayerName.bottom
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
 
-            front: Image {
-                width: 64
-                height: 64
-                source: "qrc:/res/images/tile_black.png";
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-            back: Image {
-                width: 64
-                height: 64
-                source: "qrc:/res/images/tile_white.png";
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
+            //            padding: 2
+            //            topPadding:  2
+            //            bottomPadding: 2
 
-            transform: Rotation {
-                id: rotation
-                origin.x: flipable.width/2
-                origin.y: flipable.height/2
-                axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
-                angle: 0    // the default angle
-            }
-
-            states: State {
-                name: "back"
-                PropertyChanges { target: rotation; angle: 180 }
-                when: flipable.flipped
-            }
-
-            transitions: Transition {
-                NumberAnimation { target: rotation; property: "angle"; duration: 4000 }
+            text: qsTr("UNDO")
+            onFlaped: {
+                 console.log("Undo.flap");
             }
         }
     }
@@ -162,7 +133,6 @@ ColumnLayout{
     ProportionalRect {
         id:boxButtons
         Layout.preferredHeight: 120
-
     }
 
     Component.onCompleted: {

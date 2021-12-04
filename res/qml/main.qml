@@ -45,8 +45,10 @@ QQC2.ApplicationWindow {
 
     width: settings.largeScreen  ? 1024 : 920
     height: settings.largeScreen ? 768  : 690
+
     minimumHeight: settings.gameFieldSize +8
     minimumWidth: settings.gameFieldSize+settings.controlPanelWidth +12
+
     Material.theme: themeSettings.materialTheme
     Material.accent: Material.color(Material.Indigo)
 
