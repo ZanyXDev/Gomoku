@@ -17,6 +17,8 @@ QQC2.ApplicationWindow {
         category: "Theme"
         // Set dark theme to be default for the very first launch (when settings file is NOT available)
         property int materialTheme: Material.Dark
+        property string virginWhite:"#ffffff"
+        property string chinesBlack:"#111111"
     }
 
     Settings {

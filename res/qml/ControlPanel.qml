@@ -44,6 +44,17 @@ ColumnLayout{
         padding: 6
     }
 
+    component ContolButton:FineButton{
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+
+        font.family: fontFamily
+        font.pointSize: fontSize
+
+        shadowColor: themeSetting.chinesBlack
+
+        padding: 6
+    }
 
     ProportionalRect {
         id:boxTimeMoveScore
@@ -105,7 +116,7 @@ ColumnLayout{
 
     ProportionalRect {
         id:boxPlayerOrAI
-        Layout.preferredHeight: 80
+        Layout.preferredHeight: 60
 
         InfoLabel {
             id:textPlayerName
@@ -113,19 +124,13 @@ ColumnLayout{
             padding: 10
         }
 
-        FineButton{
+        ContolButton{
             id:undoButton
             anchors.top: textPlayerName.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.left: parent.left
-
-            //            padding: 2
-            //            topPadding:  2
-            //            bottomPadding: 2
-
+            enabled: backend.moves > 0 ? true : false
             text: qsTr("UNDO")
-            onFlaped: {
-                 console.log("Undo.flap");
+            onClicked:  {
+                console.log("Undo.clicked");
             }
         }
     }
