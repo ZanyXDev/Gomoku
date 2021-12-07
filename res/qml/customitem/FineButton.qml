@@ -11,10 +11,7 @@ QQC2.Button{
 
     property string fontName: "Helvetica"
     property int fontSize: 14
-    property string virginWhite:"#ffffff"
-    property string chinesBlack:"#111111"
-
-    signal flaped
+    property color shadowColor: "black"
 
     layer.enabled: true
     layer.effect: DropShadow {
@@ -23,71 +20,31 @@ QQC2.Button{
         verticalOffset: 4
         radius: 5
         samples: 11
-        color: chinesBlack
+        color: control.shadowColor
         opacity: 0.75
     }
 
-    MouseArea {
-        anchors.fill: parent
+    state: pressed ? "buttonDown": "buttonUp"
 
-        onClicked: {
-            control.flaped()
-            anim1.start()
-            console.log("QQC2.Button.contol.click");
+    states: [
+        State {
+            name: "buttonDown"
+            PropertyChanges {
+                target: control
+                scale: 0.7
+            }
+        },
+        State {
+            name: "buttonUp"
+            PropertyChanges {
+                target: control
+                scale: 1.0
+            }
         }
-        onReleased: {
-        }
+    ]
+
+    transitions: Transition {
+        NumberAnimation { properties: scale; easing.type: Easing.InOutQuad; duration: 200 }
     }
-
-    SequentialAnimation {
-        id: anim1
-
-        // Small the button
-        PropertyAnimation {
-            target: control
-            property: "scale"
-            to: 0.8
-            duration: 200
-            easing.type: Easing.InOutQuad
-        }
-
-        // Shrink back to normal
-        PropertyAnimation {
-            target: control
-            property: "scale"
-            to: 1.0
-            duration: 200
-            easing.type: Easing.InOutQuad
-        }
-    }
-
 }
 
-//        RectangularGlow {
-//            id: effect
-//            anchors.fill: rect
-//            glowRadius:  10
-//            spread:  0.2
-//            color:  "white"
-//            cornerRadius:  rect.radius + glowRadius
-//        }
-
-//        Rectangle {
-//            id:  rect
-//            color:  "black"
-//            anchors.centerIn:  parent
-//            width:  Math.round(parent.width / 1.5)
-//            height:  Math.round(parent.height / 2)
-
-//            radius:  25
-//        }
-
-//        DropShadow {
-//            anchors.fill: rect
-//            horizontalOffset: 3
-//            verticalOffset: 3
-//            radius: 8.0
-//            samples: 17
-//            color: "#80000000"
-//            //source: rect
-//        }
