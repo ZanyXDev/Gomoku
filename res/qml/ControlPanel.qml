@@ -134,7 +134,23 @@ ColumnLayout{
     ProportionalRect {
         id:boxButtons
         Layout.preferredHeight: 120
-    }
+        ContolButton{
+            id:setupButton
+            enabled: backend.moves <= 0 ? true : false
+            text: qsTr("Setup")
+            onClicked:  {
+                console.log("Setup.clicked");
+            }
+        }
+        ContolButton{
+            id:playButton
+            anchors.top: setupButton.bottom
+            // enabled: backend.moves <= 0 ? true : false
+            text: qsTr("Play")
+            onClicked:  {
+                console.log("Play.clicked");
+            }
+        }
 
         ContolButton{
             id:quitButton
