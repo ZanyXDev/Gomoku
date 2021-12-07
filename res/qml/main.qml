@@ -115,54 +115,49 @@ QQC2.ApplicationWindow {
                 Layout.preferredWidth: settings.controlPanelWidth
 
                 spacing: 2
+                onQuitApp: {
+                    console.log("Send onQuitApp clicked")
+                    quitAnimation.start()
+                }
             }
         }
     }
 
-    //    Image {
-    //        id: backGround
-    //        z: -1
-    //        source: "qrc:/res/images/background.jpg"
-    //        anchors.fill: parent
-    //        fillMode: Image.Stretch
-    //    }
+    SequentialAnimation{
+        id: quitAnimation
+        running: false
+        PauseAnimation {
+            duration: 200
+        }
+        ParallelAnimation{
+            PropertyAnimation{
+                target: gameView;
+                property: "opacity"
+                duration: 750;
+                from: 1.0;
+                to: 0.0
 
-    //    SequentialAnimation{
-    //        id: quitAnimation
-    //        running: false
-    //        PauseAnimation {
-    //            duration: 200
-    //        }
-    //        ParallelAnimation{
-    //            PropertyAnimation{
-    //                target: gameView;
-    //                property: "opacity"
-    //                duration: 750;
-    //                from: 1.0;
-    //                to: 0.0
-
-    //            }
-    //            PropertyAnimation {
-    //                target: backGround;
-    //                property: "opacity"
-    //                duration: 900;
-    //                from: 1.0;
-    //                to: 0.0
-    //            }
-    //        }
-    //        ScriptAction {
-    //            script: Qt.quit()
-    //        }
-    //    }
+            }
+            PropertyAnimation {
+                target: controlPanel;
+                property: "opacity"
+                duration: 900;
+                from: 1.0;
+                to: 0.0
+            }
+        }
+        ScriptAction {
+            script: Qt.quit()
+        }
+    }
 
     Component.onCompleted: {
         title.state = "shown"
-
-        // mainPageLoadAnimation.start()
         console.log("Theme:"+themeSettings.materialTheme);
         console.log("Size "+ appWnd.width +"x"+  appWnd.height)
         console.log("moves:"+backend.moves)
         console.log("Screen.pixelDensity:"+Screen.pixelDensity)
     }
+
 }
 

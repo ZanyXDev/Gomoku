@@ -13,6 +13,8 @@ import io.github.zanyxdev 1.0
 ColumnLayout{
     id:controlPanel
 
+    signal quitApp()
+
     component ProportionalRect: MaterialCard {
         Layout.fillHeight: true
         Layout.fillWidth: true
@@ -134,11 +136,15 @@ ColumnLayout{
         Layout.preferredHeight: 120
     }
 
-    Component.onCompleted: {
-        console.log("controlPanel.width:"+controlPanel.width)
-        console.log("controlPanel.height :"+controlPanel.height )
-        console.log("boxTimeMoveScore.height :"+boxTimeMoveScore.height )
-        console.log("boxPlayerOrAI.height :"+boxPlayerOrAI.height )
-        console.log("boxButtons.height :"+boxButtons.height )
+        ContolButton{
+            id:quitButton
+            anchors.bottom: parent.bottom
+            // enabled: backend.moves <= 0 ? true : false
+            text: qsTr("Quit")
+            onClicked:  {
+                controlPanel.quitApp()
+                console.log("Quit.clicked");
+            }
+        }
     }
 }
