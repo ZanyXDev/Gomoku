@@ -33,7 +33,8 @@ QQC2.ApplicationWindow {
         property int largeFont: 64
         property int middleFont: 32
         property int smallFont: 16
-
+        property int tinyFont: 14
+        property int itemPadding: 6
     }
     // We need the settings object both here and in other page,
     // so for convenience, we declare it as a property of the root object so that
@@ -114,8 +115,6 @@ QQC2.ApplicationWindow {
                 Layout.preferredWidth: settings.controlPanelWidth
 
                 spacing: 2
-                fontFamily:appWnd.localFont
-                fontSize: settings.middleFont
             }
         }
     }
