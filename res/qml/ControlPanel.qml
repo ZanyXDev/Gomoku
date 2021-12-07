@@ -13,9 +13,6 @@ import io.github.zanyxdev 1.0
 ColumnLayout{
     id:controlPanel
 
-    property string  fontFamily: "Helvetica"
-    property int fontSize: 16
-
     component ProportionalRect: MaterialCard {
         Layout.fillHeight: true
         Layout.fillWidth: true
@@ -26,7 +23,6 @@ ColumnLayout{
         Material.elevation: 6
 
         radius: 4
-
     }
 
     component InfoLabel:QQC2.Label{
@@ -35,25 +31,25 @@ ColumnLayout{
 
         color: Material.foreground
 
-        font.family: fontFamily
-        font.pointSize: fontSize
+        font.family: appWnd.localFont
+        font.pointSize: settings.middleFont
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        padding: 6
+        padding: settings.itemPadding
     }
 
     component ContolButton:FineButton{
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.left: parent.left
 
-        font.family: fontFamily
-        font.pointSize: fontSize
+        font.family: appWnd.localFont
+        font.pointSize: settings.smallFont
 
         shadowColor: themeSetting.chinesBlack
 
-        padding: 6
+        padding: settings.itemPadding
     }
 
     ProportionalRect {
@@ -72,7 +68,7 @@ ColumnLayout{
 
             anchors.top: textTime.bottom
 
-            font.pointSize: fontSize - 8
+            font.pointSize: settings.smallFont
 
             text: backend.gameTime
         }
@@ -90,7 +86,7 @@ ColumnLayout{
 
             anchors.top: textMoves.bottom
 
-            font.pointSize: fontSize - 8
+            font.pointSize: settings.smallFont
 
             text: backend.moves
         }
@@ -108,9 +104,7 @@ ColumnLayout{
 
             anchors.top: textScore.bottom
 
-            font.pointSize: fontSize - 8
-
-            text: qsTr("0000")//backend.score
+            text: backend.score
         }
     }
 
@@ -121,7 +115,7 @@ ColumnLayout{
         InfoLabel {
             id:textPlayerName
             text: qsTr("AI-1")//backend.playerName
-            padding: 10
+            padding: settings.itemPadding
         }
 
         ContolButton{
