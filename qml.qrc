@@ -1,12 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>res/qml/customitem/qmldir</file>
-        <file>res/qml/customitem/AppSettings.qml</file>
         <file>res/qml/main.qml</file>
-        <file>res/qml/TileModel.qml</file>
         <file>res/qml/MenuPanel.qml</file>
-        <file>res/qml/TestWindow.qml</file>
-        <file>res/qml/customitem/RectangleWithGradient.qml</file>
         <file>res/qml/ControlPanel.qml</file>
         <file>res/qml/customitem/FineButton.qml</file>
         <file>res/qml/customitem/ToggleSwitch.qml</file>
