@@ -9,8 +9,6 @@ import QtQuick.Controls.Material.impl 2.2
 QQC2.Button{
     id: control
 
-    property string fontName: "Helvetica"
-    property int fontSize: 14
     property color shadowColor: "black"
 
     layer.enabled: true

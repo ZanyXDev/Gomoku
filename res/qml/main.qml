@@ -13,7 +13,18 @@ QQC2.ApplicationWindow {
     id:appWnd
 
     Settings {
-        id: themeSettings
+        id: m_settings
+        //property alias wireless: wirelessSwitch.checked
+        property int gameFieldSize: 690
+        property int controlPanelWidth: 180
+
+        property bool largeScreen: Screen.desktopAvailableHeight >= 900
+        property double scale: appWnd.width / 1600
+        property int itemPadding: 6
+    }
+
+    Settings {
+        id: m_themeSettings
         category: "Theme"
         // Set dark theme to be default for the very first launch (when settings file is NOT available)
         property int materialTheme: Material.Dark
@@ -22,26 +33,21 @@ QQC2.ApplicationWindow {
     }
 
     Settings {
-        id: settings
-        //property alias wireless: wirelessSwitch.checked
-        property int gameFieldSize: 690
-        property int controlPanelWidth: 180
-
-        property bool largeScreen: Screen.desktopAvailableHeight >= 900
-        property double scale: appWnd.width / 1600
-
-        property int largeFont: 64
-        property int middleFont: 32
-        property int smallFont: 16
-        property int tinyFont: 14
-        property int itemPadding: 6
+        id: m_fontSettings
+        category: "Font"
+        property string fontName: m_localFont.name
+        property real largeFont: 64
+        property real middleFont: 32
+        property real smallFont: 16
+        property real tinyFont: 8
     }
+
     // We need the settings object both here and in other page,
     // so for convenience, we declare it as a property of the root object so that
     // it will be available to all of the QML files that we load.
-    property alias settings: settings
-    property alias themeSetting: themeSettings
-    property string localFont: _localFont.name
+    property alias settings: m_settings
+    property alias themeSetting: m_themeSettings
+    property alias fontSetting: m_fontSettings
 
     title: "Gomoku"
     visible: true
@@ -49,16 +55,16 @@ QQC2.ApplicationWindow {
     width: settings.largeScreen  ? 1024 : 920
     height: settings.largeScreen ? 768  : 690
 
-    minimumHeight: settings.gameFieldSize +8
-    minimumWidth: settings.gameFieldSize+settings.controlPanelWidth +12
+    minimumHeight: settings.gameFieldSize + 8
+    minimumWidth: settings.gameFieldSize + settings.controlPanelWidth +12
 
-    Material.theme: themeSettings.materialTheme
+    Material.theme: m_themeSettings.materialTheme
     Material.accent: Material.color(Material.Indigo)
 
     flags: Qt.Dialog
 
     FontLoader {
-        id: _localFont;
+        id: m_localFont;
         source: "qrc:/res/fonts/China.ttf"
     }
 
@@ -97,7 +103,7 @@ QQC2.ApplicationWindow {
                         anchors.centerIn: parent
                         color: Material.foreground
                         text: parent.width + 'x' + parent.height
-                        font.pixelSize: 12
+                        font { pointSize: fontSetting.smallFont }
                     }
 
                 }
@@ -115,6 +121,7 @@ QQC2.ApplicationWindow {
                 Layout.preferredWidth: settings.controlPanelWidth
 
                 spacing: 2
+
                 onQuitApp: {
                     console.log("Send onQuitApp clicked")
                     quitAnimation.start()
@@ -134,16 +141,13 @@ QQC2.ApplicationWindow {
                 target: gameView;
                 property: "opacity"
                 duration: 750;
-                from: 1.0;
-                to: 0.0
-
+                from: 1.0; to: 0.0
             }
             PropertyAnimation {
                 target: controlPanel;
                 property: "opacity"
                 duration: 900;
-                from: 1.0;
-                to: 0.0
+                from: 1.0; to: 0.0
             }
         }
         ScriptAction {
@@ -153,11 +157,10 @@ QQC2.ApplicationWindow {
 
     Component.onCompleted: {
         title.state = "shown"
-        console.log("Theme:"+themeSettings.materialTheme);
-        console.log("Size "+ appWnd.width +"x"+  appWnd.height)
-        console.log("moves:"+backend.moves)
-        console.log("Screen.pixelDensity:"+Screen.pixelDensity)
+        //        console.log("Theme:"+themeSettings.materialTheme);
+        //        console.log("Size "+ appWnd.width +"x"+  appWnd.height)
+        //        console.log("moves:"+backend.moves)
+        //        console.log("Screen.pixelDensity:"+Screen.pixelDensity)
     }
-
 }
 

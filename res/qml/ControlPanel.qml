@@ -33,21 +33,26 @@ ColumnLayout{
 
         color: Material.foreground
 
-        font.family: appWnd.localFont
-        font.pointSize: settings.middleFont
+        font { family: fontSetting.fontName}
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
         padding: settings.itemPadding
+
+        Component.onCompleted: {
+            console.log("fontName:" + font.family)
+        }
     }
 
     component ContolButton:FineButton{
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.left: parent.left
 
-        font.family: appWnd.localFont
-        font.pointSize: settings.smallFont
+        font {
+            family: fontSetting.fontName
+            pointSize: fontSetting.smallFont
+        }
 
         shadowColor: themeSetting.chinesBlack
 
@@ -61,8 +66,11 @@ ColumnLayout{
 
         InfoLabel {
             id:textTime
-
+            font { pointSize: fontSetting.middleFont}
             text: qsTr("Time")
+            Component.onCompleted: {
+                console.log("fontSize:" + font.pointSize)
+            }
         }
 
         InfoLabel {
@@ -70,7 +78,7 @@ ColumnLayout{
 
             anchors.top: textTime.bottom
 
-            font.pointSize: settings.smallFont
+            font { pointSize: fontSetting.smallFont}
 
             text: backend.gameTime
         }
@@ -79,7 +87,7 @@ ColumnLayout{
             id:textMoves
 
             anchors.top: valueTime.bottom
-
+            font { pointSize: fontSetting.middleFont}
             text: qsTr("Moves")
         }
 
@@ -88,7 +96,7 @@ ColumnLayout{
 
             anchors.top: textMoves.bottom
 
-            font.pointSize: settings.smallFont
+            font { pointSize: fontSetting.middleFont}
 
             text: backend.moves
         }
@@ -97,7 +105,7 @@ ColumnLayout{
             id:textScore
 
             anchors.top: valueMoves.bottom
-
+            font { pointSize: fontSetting.smallFont}
             text: qsTr("Score")
         }
 
@@ -105,7 +113,7 @@ ColumnLayout{
             id:valueScore
 
             anchors.top: textScore.bottom
-
+            font { pointSize: fontSetting.middleFont}
             text: backend.score
         }
     }
@@ -116,6 +124,7 @@ ColumnLayout{
 
         InfoLabel {
             id:textPlayerName
+            font { pointSize: fontSetting.middleFont}
             text: qsTr("AI-1")//backend.playerName
             padding: settings.itemPadding
         }
@@ -124,6 +133,7 @@ ColumnLayout{
             id:undoButton
             anchors.top: textPlayerName.bottom
             enabled: backend.moves > 0 ? true : false
+
             text: qsTr("UNDO")
             onClicked:  {
                 console.log("Undo.clicked");
