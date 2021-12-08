@@ -13,6 +13,18 @@ Rectangle {
     opacity: 0.8
     visible: true
 
+    /**
+     *usage Text {
+    *             visible: logAndReturnValue(varName)
+    *             text: "Example Text"
+    *      }
+    */
+    function logAndReturnValue(varToLog)
+    {
+      console.log("value: " + varToLog);
+      return varToLog;
+    }
+
     Component.onCompleted: {
         console.log("------------ debugRect ----------")
         console.log("debugRect.height:"+debugRect.height)
