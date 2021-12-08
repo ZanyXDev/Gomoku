@@ -6,5 +6,6 @@
         <file>res/qml/customitem/FineButton.qml</file>
         <file>res/qml/customitem/ToggleSwitch.qml</file>
         <file>res/qml/customitem/MaterialCard.qml</file>
+        <file>res/qml/customitem/MyDebugRect.qml</file>
     </qresource>
 </RCC>
