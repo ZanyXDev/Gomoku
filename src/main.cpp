@@ -57,7 +57,8 @@ int main(int argc, char *argv[]) {
     }
     tileModel.append({false, false, false});
   }
-  qDebug() << tileModel.rowCount(QModelIndex());
+  qDebug() << Q_FUNC_INFO
+           << tileModel.rowCount(QModelIndex());
 #endif
 
   qmlRegisterType<BackEnd>("io.github.zanyxdev", 1, 0, "BackEnd");
