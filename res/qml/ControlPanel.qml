@@ -41,7 +41,7 @@ ColumnLayout{
         padding: settings.itemPadding
 
         Component.onCompleted: {
-            console.log("fontName:" + font.family)
+            //console.log("fontName:" + font.family)
         }
     }
 
@@ -59,6 +59,10 @@ ColumnLayout{
         padding: settings.itemPadding
     }
 
+    component HSwitch:ToggleSwitch{
+        Material.elevation: 6
+    }
+
     ProportionalRect {
         id:boxTimeMoveScore
 
@@ -69,7 +73,7 @@ ColumnLayout{
             font { pointSize: fontSetting.middleFont}
             text: qsTr("Time")
             Component.onCompleted: {
-                console.log("fontSize:" + font.pointSize)
+                //console.log("fontSize:" + font.pointSize)
             }
         }
 
@@ -120,7 +124,7 @@ ColumnLayout{
 
     ProportionalRect {
         id:boxPlayerOrAI
-        Layout.preferredHeight: 60
+        Layout.preferredHeight: 50
 
         InfoLabel {
             id:textPlayerName
@@ -152,6 +156,7 @@ ColumnLayout{
                 console.log("Setup.clicked");
             }
         }
+
         ContolButton{
             id:playButton
             anchors.top: setupButton.bottom
@@ -159,6 +164,28 @@ ColumnLayout{
             text: qsTr("Play")
             onClicked:  {
                 console.log("Play.clicked");
+            }
+        }
+
+        HSwitch{
+            id:musicSwitch
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+            anchors.top: playButton.bottom
+
+            imageOn:"qrc:/res/images/outline_volume_up_black_24dp.png"
+            imageOff:"qrc:/res/images/outline_volume_off_black_24dp.png"
+            // status: true
+
+            textOff:qsTr("OFF")
+            textOn:qsTr("ON")
+            Component.onCompleted: {
+                console.log("------------ musicSwitch ------------")
+                console.log("musicSwitch.height:"+musicSwitch.height)
+                console.log("musicSwitch.width:"+musicSwitch.width)
+
+                console.log("parent.height:"+parent.height)
+                console.log("parent.width:"+parent.width)
             }
         }
 
