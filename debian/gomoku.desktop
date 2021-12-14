@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Gomoku
+GenericName=Gomoku
+Comment=The simple game (with AI) implemented in Qt [QML]
+Exec=Gomoku
+Icon=Gomoku
+Terminal=false
+Type=Application
+Categories=Game;Text;Qt;
