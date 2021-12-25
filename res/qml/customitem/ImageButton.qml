@@ -23,17 +23,19 @@
 *
 ***************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.12
 
-Image {
+Item {
     id: container
 
-    opacity: 0.6
+    //opacity: 0.4
 
     property bool enabled: true
     property bool spaceDown: false
     property bool isFocused: activeFocus || mouseArea.containsMouse
     property bool isPressed: spaceDown || mouseArea.pressed
+    property string outLineSource: string
+    property string inLineSource: string
 
     signal pressed()
     signal released()
@@ -42,6 +44,7 @@ Image {
     states: [
         State {
             name: "disabled"; when: (container.enabled === false)
+             PropertyChanges { target: container; opacity: 0.4 }
         },
         State {
             name: "active"; when: container.enabled && container.isFocused && !container.isPressed
@@ -49,15 +52,31 @@ Image {
         },
         State {
             name: "pressed"; when: container.enabled && container.isPressed
+            PropertyChanges {
+                target: inlineImage
+                scale: 0.9
+            }
         }
     ]
 
     Behavior on opacity { NumberAnimation { duration: 200 } }
 
+    transitions: Transition {
+        NumberAnimation { properties: scale; easing.type: Easing.InOutQuad; duration: 200 }
+    }
+
     clip: true
     smooth: true
-    fillMode: Image.PreserveAspectFit
-
+    Image{
+        id:outlineImage
+        fillMode: Image.PreserveAspectFit
+        source: outLineSource
+    }
+    Image{
+        id:inlineImage
+        source: inLineSource
+        fillMode: Image.PreserveAspectFit
+    }
     MouseArea {
         id: mouseArea
 
