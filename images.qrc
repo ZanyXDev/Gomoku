@@ -6,5 +6,7 @@
         <file>res/images/tile_black.png</file>
         <file>res/images/outline_volume_off_black_24dp.png</file>
         <file>res/images/outline_volume_up_black_24dp.png</file>
+        <file>res/images/outline_button.png</file>
+        <file>res/images/inline_button.png</file>
     </qresource>
 </RCC>
