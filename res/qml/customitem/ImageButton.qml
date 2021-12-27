@@ -1,6 +1,7 @@
 /***************************************************************************
 * Copyright (c) 2013 Reza Fatahilah Shah <rshah0385@kireihana.com>
 * Copyright (c) 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+* Copyright (c) 2021 ZanyxDev <zanyxdev@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -28,12 +29,11 @@ import QtQuick 2.12
 Item {
     id: container
 
-    //opacity: 0.4
+    opacity: 0.8
 
     property bool enabled: true
-    property bool spaceDown: false
     property bool isFocused: activeFocus || mouseArea.containsMouse
-    property bool isPressed: spaceDown || mouseArea.pressed
+    property bool isPressed: mouseArea.pressed
     property string outLineSource: string
     property string inLineSource: string
 
@@ -44,25 +44,30 @@ Item {
     states: [
         State {
             name: "disabled"; when: (container.enabled === false)
-             PropertyChanges { target: container; opacity: 0.4 }
+            PropertyChanges { target: container; opacity: 0.4 }
         },
         State {
             name: "active"; when: container.enabled && container.isFocused && !container.isPressed
-            PropertyChanges { target: container; opacity: 1.0 }
+            PropertyChanges { target: container; opacity: 0.9 }
         },
         State {
             name: "pressed"; when: container.enabled && container.isPressed
-            PropertyChanges {
-                target: inlineImage
-                scale: 0.9
-            }
+            PropertyChanges { target: inlineImage;scale: 0.9 }
+        },
+        State {
+            name: "released" ; when: container.released
+        },
+        State{
+            name:"hover";when: container.enabled && container.isFocused && !container.isPressed
+            PropertyChanges { target: container; opacity: 1.0 }
         }
+
     ]
 
-    Behavior on opacity { NumberAnimation { duration: 200 } }
 
     transitions: Transition {
         NumberAnimation { properties: scale; easing.type: Easing.InOutQuad; duration: 200 }
+        NumberAnimation { properties: opacity; easing.type: Easing.InOutQuad; duration: 200 }
     }
 
     clip: true
@@ -91,25 +96,19 @@ Item {
         onPressed: { container.focus = true; container.pressed() }
         onClicked: { container.focus = true; container.clicked() }
         onReleased: { container.focus = true; container.released() }
+        onHoveredChanged: {container.state == 'hover' ? container.state ="":container.state ='hover'}
     }
 
-    Keys.onPressed: {
-        if (event.key === Qt.Key_Space) {
-            container.spaceDown = true;
-            container.pressed()
-            event.accepted = true
-        } else if (event.key === Qt.Key_Return) {
-            container.clicked()
-            event.accepted = true
-        }
+
+    onStateChanged: {
+        console.log("State: " + state);
     }
 
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Space) {
-            container.spaceDown = false;
-            container.released()
-            container.clicked()
-            event.accepted = true
+    Component.onCompleted: {
+        console.log("Name of first state:", states[0].name)
+        for (var i = 0; i < states.length; i++){
+            console.log("state", i, states[i].name)
         }
+        console.log("inlineImage.scale: " + inlineImage.scale);
     }
 }
