@@ -9,5 +9,6 @@
         <file>res/qml/customitem/MyDebugRect.qml</file>
         <file>res/qml/test_wnd.qml</file>
         <file>res/qml/customitem/ImageButton.qml</file>
+        <file>res/qml/customitem/ClickWave.qml</file>
     </qresource>
 </RCC>

@@ -86,3 +86,6 @@ RESOURCES += \
 
 
 # Default rules for deployment.
+
+DISTFILES += \
+    CodeStyle.md
