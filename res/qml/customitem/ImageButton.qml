@@ -27,61 +27,57 @@
 import QtQuick 2.12
 
 Item {
-    id: container
-
-    opacity: 0.8
+    id: control
+    // ----- Property Declarations
 
     property bool enabled: true
     property bool isFocused: activeFocus || mouseArea.containsMouse
     property bool isPressed: mouseArea.pressed
     property string outLineSource: string
     property string inLineSource: string
+    property color  waveColor: "#55c9c9c9"
+    property real pressX: 0.0
+    property real pressY: 0.0
 
+    // ----- Signal declarations
     signal pressed()
     signal released()
     signal clicked()
+    // Do not use empty lines to separate the assignments. Empty lines are reserved
+    // for separating type declarations.
+    opacity: 0.8
+    clip: true
+    smooth: true
 
+ // ----- States and transitions.
     states: [
         State {
-            name: "disabled"; when: (container.enabled === false)
-            PropertyChanges { target: container; opacity: 0.4 }
+            name: "disabled"; when: (control.enabled === false)
+            PropertyChanges { target: control; opacity: 0.4 }
         },
         State {
-            name: "active"; when: container.enabled && container.isFocused && !container.isPressed
-            PropertyChanges { target: container; opacity: 0.9 }
+            name: "active"; when: control.enabled && control.isFocused && !control.isPressed
+            PropertyChanges { target: control; opacity: 0.9 }
         },
         State {
-            name: "pressed"; when: container.enabled && container.isPressed
+            name: "pressed"; when: control.enabled && control.isPressed
             PropertyChanges { target: inlineImage;scale: 0.9 }
         },
         State {
-            name: "released" ; when: container.released
+            name: "released" ; when: control.released
         },
         State{
-            name:"hover";when: container.enabled && container.isFocused && !container.isPressed
-            PropertyChanges { target: container; opacity: 1.0 }
+            name:"hover";when: control.enabled && control.isFocused && !control.isPressed
+            PropertyChanges { target: control; opacity: 1.0 }
         }
 
     ]
-
 
     transitions: Transition {
         NumberAnimation { properties: scale; easing.type: Easing.InOutQuad; duration: 200 }
         NumberAnimation { properties: opacity; easing.type: Easing.InOutQuad; duration: 200 }
     }
 
-    clip: true
-    smooth: true
-    Image{
-        id:outlineImage
-        fillMode: Image.PreserveAspectFit
-        source: outLineSource
-    }
-    Image{
-        id:inlineImage
-        source: inLineSource
-        fillMode: Image.PreserveAspectFit
-    }
     MouseArea {
         id: mouseArea
 
@@ -93,13 +89,25 @@ Item {
 
         acceptedButtons: Qt.LeftButton
 
-        onPressed: { container.focus = true; container.pressed() }
-        onClicked: { container.focus = true; container.clicked() }
-        onReleased: { container.focus = true; container.released() }
-        onHoveredChanged: {container.state == 'hover' ? container.state ="":container.state ='hover'}
+        onPressed: {
+            control.focus = true
+            control.pressed()
+        }
+        onClicked: {
+            control.focus = true
+            control.clicked()
+            pressX = mouseArea.mouseX
+            pressY = mouseArea.mouseY
+        }
+        onReleased: {
+            control.focus = true
+            control.released()
+        }
+        onHoveredChanged: {
+            control.state == 'hover' ? control.state ="":control.state ='hover'
+        }
     }
-
-
+// ----- Signal handler property color  waveColor:            "#55c9c9c9"s
     onStateChanged: {
         console.log("State: " + state);
     }
@@ -110,5 +118,30 @@ Item {
             console.log("state", i, states[i].name)
         }
         console.log("inlineImage.scale: " + inlineImage.scale);
+    }
+    // ----- Visual children.
+    Image{
+        id:outlineImage
+        fillMode: Image.PreserveAspectFit
+        source: outLineSource
+    }
+
+    Image{
+        id:inlineImage
+        source: inLineSource
+        fillMode: Image.PreserveAspectFit
+    }
+
+    ClickWave
+    {
+      id: clickWave
+
+      width:  parent.width * 3
+      height: parent.height * 3
+
+      pressX:     control.pressX
+      pressY:     control.pressY
+      pressed:    control.pressed
+      wave_color: control.waveColor
     }
 }
