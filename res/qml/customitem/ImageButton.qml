@@ -99,13 +99,18 @@ Item {
         onClicked: {
             control.focus = true
             control.clicked()
-            pressX = mouseArea.mouseX
-            pressY = mouseArea.mouseY
+
         }
         onReleased: {
             control.focus = true
             control.released()
         }
+        onPressedChanged: {
+            pressX = mouseArea.mouseX
+            pressY = mouseArea.mouseY
+            clickWave.pressed = isPressed
+        }
+
         onHoveredChanged: {
             control.state == 'hover' ? control.state ="":control.state ='hover'
         }
