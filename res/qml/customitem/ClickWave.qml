@@ -45,32 +45,31 @@ Item {
 
         property:   "wave_offset"
 
-        from:       0
-        to:         0.4
+        from: 0; to: 0.4
 
         duration:   750
         running:    false
         target:     control
 
-        onStarted:  {
-            control.visible = true
-        }
-        onFinished: {
-            control.visible = false
-        }
+        onStarted:  { control.visible = true }
+        onFinished: { control.visible = false }
     }
 
     // ----- Signal handlers
     onPressedChanged:{
         if ( control.pressed ){
             control.click( control.pressX, control.pressY );
+            //console.trace()
         }
-        console.log("ClickWave onPressedChange")
+
     }
+
     // ----- Visual children.
 
     // functions
     function click( ptx,pty ){
+        //console.log("click(ptx,pty):"+ptx+":"+pty)
+        //console.trace()
         gradientAnimation.stop()
         control.x = ptx - control.width / 2
         control.y = pty - control.height / 2
