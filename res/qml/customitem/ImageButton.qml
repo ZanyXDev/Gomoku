@@ -25,6 +25,7 @@
 ***************************************************************************/
 
 import QtQuick 2.12
+import QtGraphicalEffects 1.0
 
 
 Item {
@@ -39,6 +40,7 @@ Item {
     property color  waveColor: "#55c9c9c9"
     property real pressX: 0.0
     property real pressY: 0.0
+    property color shadowColor: "black"
 
     // ----- Signal declarations
     signal pressed()
@@ -51,6 +53,17 @@ Item {
     smooth: true
     width: outlineImage.implicitWidth
     height: outlineImage.implicitHeight
+
+    layer.enabled: true
+    layer.effect: DropShadow {
+        anchors.fill: control
+        horizontalOffset: 3
+        verticalOffset: 4
+        radius: 5
+        samples: 11
+        color: control.shadowColor
+        opacity: 0.75
+    }
 
     // ----- States and transitions.
     states: [
