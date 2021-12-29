@@ -26,6 +26,7 @@
 
 import QtQuick 2.12
 
+
 Item {
     id: control
     // ----- Property Declarations
@@ -48,8 +49,10 @@ Item {
     opacity: 0.8
     clip: true
     smooth: true
+    width: outlineImage.implicitWidth
+    height: outlineImage.implicitHeight
 
- // ----- States and transitions.
+    // ----- States and transitions.
     states: [
         State {
             name: "disabled"; when: (control.enabled === false)
@@ -106,10 +109,11 @@ Item {
         onHoveredChanged: {
             control.state == 'hover' ? control.state ="":control.state ='hover'
         }
+
     }
-// ----- Signal handler property color  waveColor:            "#55c9c9c9"s
+    // ----- Signal handler
     onStateChanged: {
-        console.log("State: " + state);
+        // console.log("State: " + state);
     }
 
     Component.onCompleted: {
@@ -117,7 +121,6 @@ Item {
         for (var i = 0; i < states.length; i++){
             console.log("state", i, states[i].name)
         }
-        console.log("inlineImage.scale: " + inlineImage.scale);
     }
     // ----- Visual children.
     Image{
