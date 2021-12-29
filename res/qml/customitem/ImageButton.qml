@@ -140,16 +140,14 @@ Item {
         fillMode: Image.PreserveAspectFit
     }
 
-    ClickWave
-    {
-      id: clickWave
+    ClickWave{
+        id: clickWave
 
-      width:  parent.width * 3
-      height: parent.height * 3
+        width:  Math.max( control.width, control.height )
+        height: width
 
-      pressX:     control.pressX
-      pressY:     control.pressY
-      pressed:    control.pressed
-      wave_color: control.waveColor
+        pressX:     control.pressX
+        pressY:     control.pressY
+        wave_color: control.waveColor
     }
 }
