@@ -1,9 +1,10 @@
 !versionAtLeast(QT_VERSION, 5.10.0):error("Requires Qt version 5.10.0 or greater.")
 
 TEMPLATE +=app
-QT       += core gui concurrent qml quick quickcontrols2
+TARGET = gomuku
+QT       += core gui concurrent qml quick quickcontrols2 multimedia purchasing
 
-VERSION = 0.3
+VERSION = 0.7
 
 # allows use of version variable elsewhere
 DEFINES += "VERSION=$$VERSION"
@@ -12,17 +13,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 LANGUAGE  = C++
 
-CONFIG += c++17 resources_big cmdline qml_debug
+CONFIG += c++17 resources_big qml_debug
 
 include(gitversion.pri)
-
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH += $$PWD
-
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+#DEFINES += QT_DEPRECATED_WARNINGS QT_NO_CAST_FROM_ASCII QT_NO_CAST_TO_ASCII
 
 #don't use precompiled headers https://www.kdab.com/beware-of-qt-module-wide-includes/
 
@@ -42,50 +41,78 @@ RESOURCES += \
 #    resources.qrc \
 
 #TRANSLATIONS += \
-#    i18n/five_in_a_row_ru_RU.ts
+#    G2_ru_RU.ts
+#CONFIG += lrelease
+#CONFIG += embed_translations
 
 # Setting the application icon
 #win32: RC_ICONS = res/icons/five_in_a_row-qt.ico # On Windows
 #macx: ICON = res/icons/five_in_a_row-qt.ico # On Mac OSX
 
-#android {
-#    QT += androidextras
+#QMAKE_CFLAGS += $$(QMAKE_CFLAGS_ENV)
+#QMAKE_CXXFLAGS += $$(QMAKE_CXXFLAGS_ENV)
+#QMAKE_LFLAGS += $$(QMAKE_LFLAGS_ENV)
 
-#    disable-xcb {
-#        message("The disable-xcb option has been deprecated. Please use disable-desktop instead.")
-#        CONFIG += disable-desktop
-#    }
+# Additional import path used to resolve QML modules just for Qt Quick Designer
+QML_DESIGNER_IMPORT_PATH =
 
-#    CONFIG(release, debug|release) {
-#        CONFIG += qtquickcompiler
-#    }
+# Additional import path used to resolve QML modules in Qt Creator's code model
+QML_IMPORT_PATH += $$PWD
 
-#    OTHER_FILES += \
-#        android/AndroidManifest.xml \
-#        android/build.gradle \
-#        android/gradle.properties \
-#        android/gradlew \
-#        android/gradlew.bat \
-#        android/gradle/wrapper/gradle-wrapper.jar \
-#        android/gradle/wrapper/gradle-wrapper.properties \
-#        android/res/values/libs.xml
+android {
+    QT += androidextras
 
-#ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android/source
+    disable-xcb {
+        message("The disable-xcb option has been deprecated. Please use disable-desktop instead.")
+        CONFIG += disable-desktop
+    }
 
-#contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
- #       ANDROID_EXTRA_LIBS = \
- #          $$PWD/android/3rdparty/openssl/armeabi-v7a/libcrypto_1_1.so \
- #         $$PWD/android/3rdparty/openssl/armeabi-v7a/libssl_1_1.so
-# }
-#contains(ANDROID_TARGET_ARCH,arm64-v8a) {
-        #ANDROID_EXTRA_LIBS = \
-        #    $$PWD/android/3rdparty/openssl/arm64-v8a/libcrypto_1_1.so \
-        #    $$PWD/android/3rdparty/openssl/arm64-v8a/libssl_1_1.so
-# }
-#}
+    CONFIG(release, debug|release) {
+        CONFIG += qtquickcompiler
+    }
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android/source
+    DISTFILES += \
+            android/source/AndroidManifest.xml \
+            android/source/build.gradle \
+            android/source/gradle.properties \
+            android/source/gradlew \
+            android/source/gradlew.bat \
+            android/source/gradle/wrapper/gradle-wrapper.jar \
+            android/source/gradle/wrapper/gradle-wrapper.properties \
+            android/source/res/drawable-hdpi/ic_launcher_background.png \
+            android/source/res/drawable-hdpi/ic_launcher_foreground.png \
+            android/source/res/drawable-hdpi/ic_splash_qt.png \
+            android/source/res/drawable-hdpi/ic_splash_theme.png \
+            android/source/res/drawable-mdpi/ic_launcher_background.png \
+            android/source/res/drawable-mdpi/ic_launcher_foreground.png \
+            android/source/res/drawable-mdpi/ic_splash_qt.png \
+            android/source/res/drawable-mdpi/ic_splash_theme.png \
+            android/source/res/drawable-xhdpi/ic_launcher_background.png \
+            android/source/res/drawable-xhdpi/ic_launcher_foreground.png \
+            android/source/res/drawable-xhdpi/ic_splash_qt.png \
+            android/source/res/drawable-xhdpi/ic_splash_theme.png \
+            android/source/res/drawable-xxhdpi/ic_launcher_background.png \
+            android/source/res/drawable-xxhdpi/ic_launcher_foreground.png \
+            android/source/res/drawable-xxhdpi/ic_splash_qt.png \
+            android/source/res/drawable-xxhdpi/ic_splash_theme.png \
+            android/source/res/drawable-xxxhdpi/ic_launcher_background.png \
+            android/source/res/drawable-xxxhdpi/ic_launcher_foreground.png \
+            android/source/res/drawable-xxxhdpi/ic_splash_qt.png \
+            android/source/res/drawable-xxxhdpi/ic_splash_theme.png \
+            android/source/res/drawable/splash_qt.xml \
+            android/source/res/drawable/splash_theme.xml \
+            android/source/res/mipmap-anydpi-v26/ic_launcher.xml \
+            android/source/res/mipmap-hdpi/ic_launcher.png \
+            android/source/res/mipmap-mdpi/ic_launcher.png \
+            android/source/res/mipmap-xhdpi/ic_launcher.png \
+            android/source/res/mipmap-xxhdpi/ic_launcher.png \
+            android/source/res/mipmap-xxxhdpi/ic_launcher.png \
+            android/source/res/values-ru/strings.xml \
+            android/source/res/values/colors.xml \
+            android/source/res/values/libs.xml \
+            android/source/res/values/strings.xml \
+            android/source/res/values/styles.xml \
+            android/source/res/xml/backup_content.xml \
+            android/source/src/io/github/zanyxdev/gomoku/GomokuActivity.java
+}
 
-
-# Default rules for deployment.
-
-DISTFILES += \
-    CodeStyle.md
