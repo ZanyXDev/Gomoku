@@ -12,6 +12,18 @@ import io.github.zanyxdev 1.0
 QQC2.ApplicationWindow {
     id:appWnd
 
+ Screen.orientationUpdateMask: Qt.PortraitOrientation         | Qt.LandscapeOrientation |
+                                  Qt.InvertedPortraitOrientation | Qt.InvertedLandscapeOrientation
+
+    readonly property int screenOrientation: Screen.orientation
+
+    
+    signal screenOrientationUpdated(int screenOrientation)
+
+    onScreenOrientationChanged: {
+        screenOrientationUpdated(screenOrientation);
+    }
+
     Settings {
         id: m_settings
         //property alias wireless: wirelessSwitch.checked
