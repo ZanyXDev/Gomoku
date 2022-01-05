@@ -8,52 +8,11 @@ import Qt.labs.settings 1.0
 import "customitem"
 import io.github.zanyxdev 1.0
 
-
 QQC2.ApplicationWindow {
-    id:appWnd
+    id: appWnd
 
- Screen.orientationUpdateMask: Qt.PortraitOrientation         | Qt.LandscapeOrientation |
-                                  Qt.InvertedPortraitOrientation | Qt.InvertedLandscapeOrientation
-
+    // ----- Property Declarations
     readonly property int screenOrientation: Screen.orientation
-
-    
-    signal screenOrientationUpdated(int screenOrientation)
-
-    onScreenOrientationChanged: {
-        screenOrientationUpdated(screenOrientation);
-    }
-
-    Settings {
-        id: m_settings
-        //property alias wireless: wirelessSwitch.checked
-        property int gameFieldSize: 690
-        property int controlPanelWidth: 180
-
-        property bool largeScreen: Screen.desktopAvailableHeight >= 900
-        property double scale: appWnd.width / 1600
-        property int itemPadding: 6
-    }
-
-    Settings {
-        id: m_themeSettings
-        category: "Theme"
-        // Set dark theme to be default for the very first launch (when settings file is NOT available)
-        property int materialTheme: Material.Dark
-        property string virginWhite:"#ffffff"
-        property string chinesBlack:"#111111"
-    }
-
-    Settings {
-        id: m_fontSettings
-        category: "Font"
-        property string fontName: m_localFont.name
-        property real largeFont: 64
-        property real middleFont: 32
-        property real smallFont: 16
-        property real tinyFont: 8
-    }
-
     // We need the settings object both here and in other page,
     // so for convenience, we declare it as a property of the root object so that
     // it will be available to all of the QML files that we load.
@@ -61,29 +20,60 @@ QQC2.ApplicationWindow {
     property alias themeSetting: m_themeSettings
     property alias fontSetting: m_fontSettings
 
+    // ----- Signal declarations
+    signal screenOrientationUpdated(int screenOrientation)
+
+    Screen.orientationUpdateMask: Qt.PortraitOrientation | Qt.LandscapeOrientation
+                                  | Qt.InvertedPortraitOrientation | Qt.InvertedLandscapeOrientation
+
     title: "Gomoku"
     visible: true
 
-    width: settings.largeScreen  ? 1024 : 920
-    height: settings.largeScreen ? 768  : 690
+    width: settings.largeScreen ? 1024 : 920
+    height: settings.largeScreen ? 768 : 690
 
     minimumHeight: settings.gameFieldSize + 8
-    minimumWidth: settings.gameFieldSize + settings.controlPanelWidth +12
+    minimumWidth: settings.gameFieldSize + settings.controlPanelWidth + 12
 
     Material.theme: m_themeSettings.materialTheme
     Material.accent: Material.color(Material.Indigo)
 
     flags: Qt.Dialog
 
-    FontLoader {
-        id: m_localFont;
-        source: "qrc:/res/fonts/China.ttf"
+    // ----- States and transitions.
+    SequentialAnimation {
+        id: quitAnimation
+        running: false
+        PauseAnimation {
+            duration: 200
+        }
+        ParallelAnimation {
+            PropertyAnimation {
+                target: gameView
+                property: "opacity"
+                duration: 750
+                from: 1.0
+                to: 0.0
+            }
+            PropertyAnimation {
+                target: controlPanel
+                property: "opacity"
+                duration: 900
+                from: 1.0
+                to: 0.0
+            }
+        }
+        ScriptAction {
+            script: Qt.quit()
+        }
     }
 
-    BackEnd{
-        id:backend
+    // ----- Signal handler
+    onScreenOrientationChanged: {
+        screenOrientationUpdated(screenOrientation)
     }
 
+    // ----- Visual children.
     ///*** Game View ***
     Item {
         id: gameView
@@ -93,7 +83,7 @@ QQC2.ApplicationWindow {
             anchors.fill: parent
             spacing: 2
             MaterialCard {
-                id:gameField
+                id: gameField
                 Material.elevation: 6
 
                 Layout.fillWidth: true
@@ -115,9 +105,10 @@ QQC2.ApplicationWindow {
                         anchors.centerIn: parent
                         color: Material.foreground
                         text: parent.width + 'x' + parent.height
-                        font { pointSize: fontSetting.smallFont }
+                        font {
+                            pointSize: fontSetting.smallFont
+                        }
                     }
-
                 }
             }
 
@@ -142,29 +133,44 @@ QQC2.ApplicationWindow {
         }
     }
 
-    SequentialAnimation{
-        id: quitAnimation
-        running: false
-        PauseAnimation {
-            duration: 200
-        }
-        ParallelAnimation{
-            PropertyAnimation{
-                target: gameView;
-                property: "opacity"
-                duration: 750;
-                from: 1.0; to: 0.0
-            }
-            PropertyAnimation {
-                target: controlPanel;
-                property: "opacity"
-                duration: 900;
-                from: 1.0; to: 0.0
-            }
-        }
-        ScriptAction {
-            script: Qt.quit()
-        }
+    // ----- Non Visual children.
+    Settings {
+        id: m_settings
+        //property alias wireless: wirelessSwitch.checked
+        property int gameFieldSize: 690
+        property int controlPanelWidth: 180
+
+        property bool largeScreen: Screen.desktopAvailableHeight >= 900
+        property double scale: appWnd.width / 1600
+        property int itemPadding: 6
+    }
+
+    Settings {
+        id: m_themeSettings
+        category: "Theme"
+        // Set dark theme to be default for the very first launch (when settings file is NOT available)
+        property int materialTheme: Material.Dark
+        property string virginWhite: "#ffffff"
+        property string chinesBlack: "#111111"
+    }
+
+    Settings {
+        id: m_fontSettings
+        category: "Font"
+        property string fontName: m_localFont.name
+        property real largeFont: 64
+        property real middleFont: 32
+        property real smallFont: 16
+        property real tinyFont: 8
+    }
+
+    FontLoader {
+        id: m_localFont
+        source: "qrc:/res/fonts/China.ttf"
+    }
+
+    BackEnd {
+        id: backend
     }
 
     Component.onCompleted: {
@@ -175,4 +181,3 @@ QQC2.ApplicationWindow {
         //        console.log("Screen.pixelDensity:"+Screen.pixelDensity)
     }
 }
-
