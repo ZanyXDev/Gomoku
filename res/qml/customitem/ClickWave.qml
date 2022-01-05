@@ -5,7 +5,7 @@ Item {
     id: control
     // ----- Property Declarations
     property double wave_offset: 0.0
-    property color wave_color: "green"
+    property color wave_color: "#55c9c9c9"
     property bool pressed: false
     property real pressX: 0
     property real pressY: 0
