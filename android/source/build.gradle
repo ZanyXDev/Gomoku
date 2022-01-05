@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+	classpath "com.android.tools.build:gradle:7.0.4"
     }
 }
 
@@ -76,6 +76,11 @@ android {
     lintOptions {
         disable 'GoogleAppIndexingWarning', 'MissingTranslation', 'PropertyEscape'
     }
+
+    compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
 }
 
 gradle.projectsEvaluated {
