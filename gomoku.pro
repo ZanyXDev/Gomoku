@@ -73,12 +73,6 @@ android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android/source
     DISTFILES += \
             android/source/AndroidManifest.xml \
-            android/source/build.gradle \
-            android/source/gradle.properties \
-            android/source/gradlew \
-            android/source/gradlew.bat \
-            android/source/gradle/wrapper/gradle-wrapper.jar \
-            android/source/gradle/wrapper/gradle-wrapper.properties \
             android/source/res/drawable-hdpi/ic_launcher_background.png \
             android/source/res/drawable-hdpi/ic_launcher_foreground.png \
             android/source/res/drawable-hdpi/ic_splash_qt.png \
@@ -113,6 +107,5 @@ android {
             android/source/res/values/strings.xml \
             android/source/res/values/styles.xml \
             android/source/res/xml/backup_content.xml \
-            android/source/src/io/github/zanyxdev/gomoku/GomokuActivity.java
 }
 
