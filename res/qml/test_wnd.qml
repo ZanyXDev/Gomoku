@@ -10,10 +10,10 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
-    ImageButton
-    {
-        width: 200
-        height: 176
+    ImageButton{
+        id:imgButton
+       // width: 200
+        //height: 176
 
         outLineSource:  "qrc:/res/images/outline_button.png"
         inLineSource:  "qrc:/res/images/inline_button.png"
@@ -23,4 +23,8 @@ Window {
             console.log( "image button clicked" );
         }
     }
+
+
+
 }
+
