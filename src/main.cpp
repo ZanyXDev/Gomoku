@@ -9,6 +9,12 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
 #include <QtQuickControls2/QQuickStyle>
+#include <QScreen>
+
+#ifdef Q_OS_ANDROID
+#include <QtAndroidExtras/QtAndroid>
+#include <QtAndroidExtras/QAndroidJniObject>
+#endif
 
 #include "backend.h"
 #include "tilemodel.h"
@@ -41,13 +47,16 @@ int main(int argc, char *argv[]) {
     myappTranslator.load(QLocale(), QLatin1String("gomoku"), QLatin1String("_"),
                          QLatin1String(":/i18n"));
     app.installTranslator(&myappTranslator);
+
     /// TODO Global fix usage Material theme and color
     QQuickStyle::setStyle(QStringLiteral("Material"));
-#ifdef QT_DEBUG
+
+#ifdef QT_DEBUG1
     const QUrl url(QStringLiteral("qrc:/res/qml/test_wnd.qml"));
 #else
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
 #endif
+
     TileModel tileModel;
     BackEnd backend;
 
@@ -70,6 +79,23 @@ int main(int argc, char *argv[]) {
 
     QQmlContext *context = engine.rootContext();
     context->setContextProperty("tileModel", &tileModel);
+
+#ifdef Q_OS_ANDROID
+    //  BUG with dpi on some androids: https://bugreports.qt-project.org/browse/QTBUG-35701       
+    int density = QtAndroid::androidActivity().callMethod<jint>("getScreenDpi");
+#else
+    QScreen *screen = qApp->primaryScreen();
+    float density = screen->physicalDotsPerInch();
+#endif
+    context->setContextProperty("mm",density / 25.4);
+    context->setContextProperty("pt", 1);
+
+    double scale = density >= 640 ? 4 :
+                   density >= 480 ? 3 :
+                   density >= 320 ? 2 :
+                   density >= 240 ? 1.5 : 1;
+
+    context->setContextProperty("dp", scale);
 
     QObject::connect(
                 &engine, &QQmlApplicationEngine::objectCreated, &app,
