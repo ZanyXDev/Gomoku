@@ -59,7 +59,26 @@ int main(int argc, char *argv[]) {
   }
   qDebug() << tileModel.rowCount(QModelIndex());
 #endif
-
+  
+  // https://doc.qt.io/qt-5/scalability.html#calculating-scaling-ratio
+  qreal refDpi = 216.;
+  qreal refHeight = 1776.;
+  qreal refWidth = 1080.;
+  QRect rect = QGuiApplication::primaryScreen()->geometry();
+  qreal height = qMax(rect.width(), rect.height());
+  qreal width = qMin(rect.width(), rect.height());
+  qreal dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
+  
+  auto scalingRatio = qMin(
+        height / refHeight,
+        width / refWidth
+  );
+  
+  auto fontSizeRatio = qMin(
+        height * refDpi / (dpi * refHeight),
+        width * refDpi / (dpi * refWidth)
+  );   
+  
   qmlRegisterType<BackEnd>("io.github.zanyxdev", 1, 0, "BackEnd");
 
   // qmlRegisterType<Tile>("gameCore", 1, 0, "Tile");
@@ -67,7 +86,10 @@ int main(int argc, char *argv[]) {
 
   QQmlContext *context = engine.rootContext();
   context->setContextProperty("tileModel", &tileModel);
-
+  
+  engine.rootContext()->setContextProperty("scalingRatio", QVariant(scalingRatio));
+  engine.rootContext()->setContextProperty("fontSizeRatio", QVariant(fontSizeRatio));
+  
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreated, &app,
       [url](QObject *obj, const QUrl &objUrl) {
