@@ -1,0 +1,95 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+    classpath "com.android.tools.build:gradle:7.0.4"
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+apply plugin: 'com.android.application'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+    /*******************************************************
+     * The following variables:
+     * - androidBuildToolsVersion,
+     * - androidCompileSdkVersion
+     * - qt5AndroidDir - holds the path to qt android files
+     *                   needed to build any Qt application
+     *                   on Android.
+     *
+     * are defined in gradle.properties file. This file is
+     * updated by QtCreator and androiddeployqt tools.
+     * Changing them manually might break the compilation!
+     *******************************************************/
+
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+    buildToolsVersion androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion ({
+            def matcher = (new File('AndroidManifest.xml')).getText('UTF-8') =~ /android:minSdkVersion="([0-9]+)"/
+
+            return matcher[0][1].toInteger()
+        }.call())
+
+        targetSdkVersion ({
+            def matcher = (new File('AndroidManifest.xml')).getText('UTF-8') =~ /android:targetSdkVersion="([0-9]+)"/
+
+            return matcher[0][1].toInteger()
+        }.call())
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile ({
+                def android_manifest_tmp = new File('AndroidManifest.tmp.xml')
+
+                android_manifest_tmp.write((new File('AndroidManifest.xml')).getText('UTF-8').replaceAll('<uses-sdk[^/]*/>', ''))
+
+                return android_manifest_tmp
+            }.call())
+
+            java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java']
+            aidl.srcDirs = [qt5AndroidDir + '/src', 'src', 'aidl']
+            res.srcDirs = [qt5AndroidDir + '/res', 'res']
+            resources.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+       }
+    }
+    // Do not compress Qt binary resources file
+    aaptOptions {
+        noCompress 'rcc'
+    }
+
+    lintOptions {
+        disable 'GoogleAppIndexingWarning', 'MissingTranslation', 'PropertyEscape'
+    }
+
+    compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << '-Xlint:unchecked'
+    }
+}
+

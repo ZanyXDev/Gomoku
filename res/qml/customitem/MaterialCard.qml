@@ -3,6 +3,12 @@ import QtQuick.Controls 2.12 as QQC2
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls.Material.impl 2.12
 
+/**
+  * @brief  Pane does not provide a layout of its own,
+  * but requires you to position its contents, for instance
+  * by creating a RowLayout or a ColumnLayout.
+*/
+
 QQC2.Pane {
     id: control
 
@@ -21,4 +27,5 @@ QQC2.Pane {
             elevation: control.Material.elevation
         }
     }
+
 }
