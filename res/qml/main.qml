@@ -29,16 +29,15 @@ QQC2.ApplicationWindow {
     title: "Gomoku"
     visible: true
 
-    width: settings.largeScreen ? 1024 : 920
-    height: settings.largeScreen ? 768 : 690
+    height: 360
+    width: 720
 
     minimumHeight: settings.gameFieldSize + 8
     minimumWidth: settings.gameFieldSize + settings.controlPanelWidth + 12
 
-    Material.theme: m_themeSettings.materialTheme
-    Material.accent: Material.color(Material.Indigo)
-
-    flags: Qt.Dialog
+    //Material.theme: m_themeSettings.materialTheme
+    //Material.accent: Material.color(Material.Indigo)
+    //flags: Qt.Dialog
 
     // ----- States and transitions.
     SequentialAnimation {
@@ -49,14 +48,14 @@ QQC2.ApplicationWindow {
         }
         ParallelAnimation {
             PropertyAnimation {
-                target: gameView
+                target: headerPanel
                 property: "opacity"
                 duration: 750
                 from: 1.0
                 to: 0.0
             }
             PropertyAnimation {
-                target: controlPanel
+                target: gamePanel
                 property: "opacity"
                 duration: 900
                 from: 1.0
@@ -73,72 +72,172 @@ QQC2.ApplicationWindow {
         screenOrientationUpdated(screenOrientation)
     }
 
-    // ----- Visual children.
-    ///*** Game View ***
-    Item {
-        id: gameView
+    Rectangle {
+        id: headerPanelRect
         anchors.fill: parent
-        RowLayout {
-            id: layout
-            anchors.fill: parent
-            spacing: 2
-            MaterialCard {
-                id: gameField
-                Material.elevation: 6
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 2
-                Layout.topMargin: 2
-                Layout.bottomMargin: 2
-                Layout.minimumWidth: settings.gameFieldSize
-                QQC2.Control {
-                    anchors.centerIn: parent
-                    width: 100
-                    height: width
-                    background: Rectangle {
-                        color: Material.background
-                        border.color: Material.foreground
-                    }
-
-                    QQC2.Label {
-                        anchors.centerIn: parent
-                        color: Material.foreground
-                        text: parent.width + 'x' + parent.height
-                        font {
-                            pointSize: fontSetting.smallFont
-                        }
-                    }
-                }
-            }
-
-            ControlPanel {
-                id: controlPanel
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-
-                Layout.topMargin: 2
-                Layout.bottomMargin: 2
-                Layout.rightMargin: 2
-
-                Layout.preferredWidth: settings.controlPanelWidth
-
-                spacing: 2
-
-                onQuitApp: {
-                    console.log("Send onQuitApp clicked")
-                    quitAnimation.start()
-                }
+        color: "red"
+        QQC2.Label {
+            anchors.centerIn: parent
+            color: "white"
+            text: "H" + parent.height + 'x' + "W" + parent.width
+            font {
+                pointSize: fontSetting.smallFont
             }
         }
     }
 
+    // ----- Visual children.
+    //    Item {
+    //        id: mainView
+    //        visible: true
+    //        anchors.fill: parent
+
+    //        ColumnLayout {
+    //            id: mainVerticalLayout
+    //            anchors.fill: parent
+    //            spacing: 2
+
+    //            Item {
+    //                id: headerPanel
+    //                Layout.fillWidth: true
+    //                Layout.fillHeight: true
+    //                Layout.leftMargin: 2
+    //                Layout.rightMargin: 2
+
+    //                Layout.preferredHeight: settings.headerPanelHeight
+    //                Rectangle {
+    //                    id: headerPanelRect
+    //                    anchors.fill: parent
+    //                    color: "red"
+    //                    QQC2.Label {
+    //                        anchors.centerIn: parent
+    //                        color: "white"
+    //                        text: "H" + parent.height + 'x' + "W" + parent.width
+    //                        font {
+    //                            pointSize: fontSetting.smallFont
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            Item {
+    //                id: gamePanel
+    //                Layout.fillWidth: true
+    //                Layout.fillHeight: true
+    //                Layout.leftMargin: 2
+    //                Layout.rightMargin: 2
+
+    //                Layout.preferredHeight: settings.gamePanelHeight
+    //                Rectangle {
+    //                    id: gamePanelRect
+    //                    anchors.fill: parent
+    //                    color: "green"
+
+    //                    QQC2.Label {
+    //                        anchors.centerIn: parent
+    //                        color: "white"
+    //                        text: "H" + parent.height + 'x' + "W" + parent.width
+    //                        font {
+    //                            pointSize: fontSetting.smallFont
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            Item {
+    //                id: buttonPanel
+    //                Layout.fillWidth: true
+    //                Layout.fillHeight: true
+    //                Layout.leftMargin: 2
+    //                Layout.rightMargin: 2
+
+    //                Layout.preferredHeight: settings.buttonPanelHeight
+    //                Rectangle {
+    //                    id: buttonPanelRect
+    //                    anchors.fill: parent
+    //                    color: "brown"
+    //                    QQC2.Label {
+    //                        anchors.centerIn: parent
+    //                        color: "white"
+    //                        text: "H" + parent.height + 'x' + "W" + parent.width
+    //                        font {
+    //                            pointSize: fontSetting.smallFont
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        Component.onCompleted: {
+    //            console.log("parent.width: " + parent.width)
+    //            console.log("mainView.width: " + mainView.width)
+    //        }
+    //    }
+
+    //    ///*** Game View ***
+    //    Item {
+    //        id: gameView
+    //        anchors.fill: parent
+    //        RowLayout {
+    //            id: layout
+    //            anchors.fill: parent
+    //            spacing: 2
+    //            MaterialCard {
+    //                id: gameField
+    //                Material.elevation: 6
+
+    //                Layout.fillWidth: true
+    //                Layout.fillHeight: true
+    //                Layout.leftMargin: 2
+    //                Layout.topMargin: 2
+    //                Layout.bottomMargin: 2
+    //                Layout.minimumWidth: settings.gameFieldSize
+    //                QQC2.Control {
+    //                    anchors.centerIn: parent
+    //                    width: 100
+    //                    height: width
+    //                    background: Rectangle {
+    //                        color: Material.background
+    //                        border.color: Material.foreground
+    //                    }
+
+    //                    QQC2.Label {
+    //                        anchors.centerIn: parent
+    //                        color: Material.foreground
+    //                        text: parent.width + 'x' + parent.height
+    //                        font {
+    //                            pointSize: fontSetting.smallFont
+    //                        }
+    //                    }
+    //                }
+    //            }
+
+    //            ControlPanel {
+    //                id: controlPanel
+    //                Layout.fillHeight: true
+    //                Layout.fillWidth: true
+
+    //                Layout.topMargin: 2
+    //                Layout.bottomMargin: 2
+    //                Layout.rightMargin: 2
+
+    //                Layout.preferredWidth: settings.controlPanelWidth
+
+    //                spacing: 2
+
+    //                onQuitApp: {
+    //                    console.log("Send onQuitApp clicked")
+    //                    quitAnimation.start()
+    //                }
+    //            }
+    //        }
+    //    }
+
     // ----- Non Visual children.
     Settings {
         id: m_settings
-        //property alias wireless: wirelessSwitch.checked
-        property int gameFieldSize: 690
-        property int controlPanelWidth: 180
+
+        // 1024x768 [334+690] [120+690+200]
+        property int headerPanelHeight: 120
+        property int gamePanelHeight: 690
+        property int buttonPanelHeight: 200
 
         property bool largeScreen: Screen.desktopAvailableHeight >= 900
         property double scale: appWnd.width / 1600
@@ -174,7 +273,9 @@ QQC2.ApplicationWindow {
     }
 
     Component.onCompleted: {
-        title.state = "shown"
+        title = "Size HxW [" + appWnd.height + "," + appWnd.width + "]"
+        console.log("Screen.desktopAvailableHeight:" + Screen.desktopAvailableHeight)
+        console.log(" Screen.desktopAvailableWidth:" + Screen.desktopAvailableWidth)
         //        console.log("Theme:"+themeSettings.materialTheme);
         //        console.log("Size "+ appWnd.width +"x"+  appWnd.height)
         //        console.log("moves:"+backend.moves)
