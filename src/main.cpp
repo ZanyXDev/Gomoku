@@ -80,26 +80,25 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<BackEnd>("io.github.zanyxdev", 1, 0, "BackEnd");
 
     // qmlRegisterType<Tile>("gameCore", 1, 0, "Tile");
-    QQmlApplicationEngine engine;
-
-    QQmlContext *context = engine.rootContext();
-    context->setContextProperty("tileModel", &tileModel);
-
 #ifdef Q_OS_ANDROID
-    //  BUG with dpi on some androids: https://bugreports.qt-project.org/browse/QTBUG-35701       
+    //  BUG with dpi on some androids: https://bugreports.qt-project.org/browse/QTBUG-35701
     int density = QtAndroid::androidActivity().callMethod<jint>("getScreenDpi");
 #else
     QScreen *screen = qApp->primaryScreen();
     float density = screen->physicalDotsPerInch();
+    qDebug() << "density:" <<density;
 #endif
-    context->setContextProperty("mm",density / 25.4);
-    context->setContextProperty("pt", 1);
-
     double scale = density >= 640 ? 4 :
                    density >= 480 ? 3 :
                    density >= 320 ? 2 :
                    density >= 240 ? 1.5 : 1;
 
+    QQmlApplicationEngine engine;
+
+    QQmlContext *context = engine.rootContext();
+    context->setContextProperty("tileModel", &tileModel);
+    context->setContextProperty("mm",density / 25.4);
+    context->setContextProperty("pt", 1);
     context->setContextProperty("dp", scale);
 
     QObject::connect(
