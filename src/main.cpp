@@ -19,6 +19,16 @@
 #include "backend.h"
 #include "tilemodel.h"
 
+void createAppConfigFolder()
+{
+    QDir dirConfig(
+                QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    qDebug() << "dirConfig.path()" << dirConfig.path();
+    if (dirConfig.exists() == false) {
+        dirConfig.mkpath(dirConfig.path());
+    }
+}
+
 int main(int argc, char *argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -33,12 +43,7 @@ int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
 
     // create folder AppConfigLocation
-    QDir dirConfig(
-                QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    qDebug() << "dirConfig.path()" << dirConfig.path();
-    if (dirConfig.exists() == false) {
-        dirConfig.mkpath(dirConfig.path());
-    }
+    createAppConfigFolder();
     /*!
    * \brief Make docs encourage readers to query locale right
    * \sa https://codereview.qt-project.org/c/qt/qtdoc/+/297560
