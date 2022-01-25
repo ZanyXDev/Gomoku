@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
 #else
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
 #endif
+    //    QtAndroid::hideSplashScreen();
     TileModel tileModel;
     BackEnd backend;
 
@@ -70,7 +71,8 @@ int main(int argc, char *argv[]) {
 
     QQmlContext *context = engine.rootContext();
     context->setContextProperty("tileModel", &tileModel);
-
+    context->setContextProperty("isMobile", false);
+    context->setContextProperty("dp", 1.5);
     QObject::connect(
                 &engine, &QQmlApplicationEngine::objectCreated, &app,
                 [url](QObject *obj, const QUrl &objUrl) {
