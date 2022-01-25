@@ -14,6 +14,7 @@
 #ifdef Q_OS_ANDROID
 #include <QtAndroidExtras/QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
+#include <QtAndroidExtras/QAndroidJniEnvironment>
 #endif
 
 #include "backend.h"
@@ -56,14 +57,6 @@ int main(int argc, char *argv[]) {
     //TODO it is
     QQuickStyle::setStyle(QStringLiteral("UniverSal"));
 
-#ifdef Q_OS_ANDROID
-    ///TODO replace +android folder
-    const QUrl url(QStringLiteral("qrc:/res/qml/main_mobile.qml"));
-    QtAndroid::hideSplashScreen();
-#else
-    const QUrl url(QStringLiteral("qrc:/res/qml/test_wnd.qml"));
-#endif
-
     TileModel tileModel;
     BackEnd backend;
 
@@ -81,28 +74,83 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<BackEnd>("io.github.zanyxdev", 1, 0, "BackEnd");
 
     // qmlRegisterType<Tile>("gameCore", 1, 0, "Tile");
+    int density = 0;
+    bool isMobile = false;
 
 #ifdef Q_OS_ANDROID
     //  BUG with dpi on some androids: https://bugreports.qt-project.org/browse/QTBUG-35701
-    int density = QtAndroid::androidActivity().callMethod<jint>("getScreenDpi");
-#else
-    QScreen *screen = qApp->primaryScreen();
-    float density = screen->physicalDotsPerInch();
-    qDebug() << "density:" <<density;
-#endif
-    double scale = density >= 640 ? 4 :
-                                    density >= 480 ? 3 :
-                                                     density >= 320 ? 2 :
-                                                                      density >= 240 ? 1.5 : 1;
+    // density = QtAndroid::androidActivity().callMethod<jint>("getScreenDpi");
 
+    /// TODO replace +android folder
+    const QUrl url(QStringLiteral("qrc:/res/qml/test_wnd.qml"));
+
+    QtAndroid::hideSplashScreen();
+
+    isMobile = true;
+    float logicalDensity = 0;
+    float yDpi = 0;
+    float xDpi = 0;
+
+    QAndroidJniEnvironment env;
+    //  BUG with dpi on some androids: https://bugreports.qt-project.org/browse/QTBUG-35701
+    QAndroidJniObject qtActivity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        return EXIT_FAILURE;
+    }
+    QAndroidJniObject resources = qtActivity.callObjectMethod("getResources", "()Landroid/content/res/Resources;");
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        return EXIT_FAILURE;
+    }
+    QAndroidJniObject displayMetrics = resources.callObjectMethod("getDisplayMetrics", "()Landroid/util/DisplayMetrics;");
+
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        return EXIT_FAILURE;
+    }
+
+    density = displayMetrics.getField<int>("densityDpi");
+    logicalDensity = displayMetrics.getField<float>("density");
+    yDpi = displayMetrics.getField<float>("ydpi");
+    xDpi = displayMetrics.getField<float>("xdpi");
+
+    qDebug() << "Native destop app =>>>";
+    qDebug() << "DensityDPI: " << density << " | "
+             << "Logical Density: " << logicalDensity << " | "
+             << "yDpi: " << yDpi  << " | "
+             << "xDpi: " << xDpi ;
+     qDebug() << "++++++++++++++++++++++++";
+#else
+    const QUrl url(QStringLiteral("qrc:/res/qml/test_wnd.qml"));
+    QScreen *screen = qApp->primaryScreen();
+    density = screen->physicalDotsPerInch() * screen->devicePixelRatio();
+    qDebug() << "Native destop app =>>>";
+    qDebug() << "DensityDPI: " << density << " | "
+             << "physicalDPI: " << screen->physicalDotsPerInch() << " | "
+             << "devicePixelRatio(): " << screen->devicePixelRatio();
+    qDebug() << "++++++++++++++++++++++++";
+#endif
+
+    double scale = density >= 640 ? 4 :
+                   density >= 480 ? 3 :
+                   density >= 320 ? 2 :
+                   density >= 240 ? 1.5 : 1;
+#ifdef QT_DEBUG
+    scale = 1.5;
+#endif
+///TODO release https://code.qt.io/cgit/qt/qtandroidextras.git/tree/examples/androidextras/customactivity?h=5.15
     QQmlApplicationEngine engine;
 
     QQmlContext *context = engine.rootContext();
     context->setContextProperty("tileModel", &tileModel);
-    context->setContextProperty("isMobile", false);
     context->setContextProperty("mm",density / 25.4);
     context->setContextProperty("pt", 1);
     context->setContextProperty("dp", scale);
+    context->setContextProperty("isMobile",isMobile);
 
     QObject::connect(
                 &engine, &QQmlApplicationEngine::objectCreated, &app,
