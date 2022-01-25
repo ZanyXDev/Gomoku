@@ -1,3 +1,5 @@
+
+
 /***************************************************************************
 * Copyright (c) 2013 Reza Fatahilah Shah <rshah0385@kireihana.com>
 * Copyright (c) 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
@@ -23,29 +25,27 @@
 * OR OTHER DEALINGS IN THE SOFTWARE.
 *
 ***************************************************************************/
-
 import QtQuick 2.12
 import QtGraphicalEffects 1.0
 
-
 Item {
     id: control
-    // ----- Property Declarations
 
+    // ----- Property Declarations
     property bool enabled: true
     property bool isFocused: activeFocus || mouseArea.containsMouse
     property bool isPressed: mouseArea.pressed
     property string outLineSource: string
     property string inLineSource: string
-    property color  waveColor: "#55c9c9c9"
+    property color waveColor: "#55c9c9c9"
     property real pressX: 0.0
     property real pressY: 0.0
     property color shadowColor: "black"
 
     // ----- Signal declarations
-    signal pressed()
-    signal released()
-    signal clicked()
+    signal pressed
+    signal released
+    signal clicked
     // Do not use empty lines to separate the assignments. Empty lines are reserved
     // for separating type declarations.
     opacity: 0.8
@@ -68,30 +68,54 @@ Item {
     // ----- States and transitions.
     states: [
         State {
-            name: "disabled"; when: (control.enabled === false)
-            PropertyChanges { target: control; opacity: 0.4 }
+            name: "disabled"
+            when: (control.enabled === false)
+            PropertyChanges {
+                target: control
+                opacity: 0.4
+            }
         },
         State {
-            name: "active"; when: control.enabled && control.isFocused && !control.isPressed
-            PropertyChanges { target: control; opacity: 0.9 }
+            name: "active"
+            when: control.enabled && control.isFocused && !control.isPressed
+            PropertyChanges {
+                target: control
+                opacity: 0.9
+            }
         },
         State {
-            name: "pressed"; when: control.enabled && control.isPressed
-            PropertyChanges { target: inlineImage;scale: 0.9 }
+            name: "pressed"
+            when: control.enabled && control.isPressed
+            PropertyChanges {
+                target: inlineImage
+                scale: 0.9
+            }
         },
         State {
-            name: "released" ; when: control.released
+            name: "released"
+            when: control.released
         },
-        State{
-            name:"hover";when: control.enabled && control.isFocused && !control.isPressed
-            PropertyChanges { target: control; opacity: 1.0 }
+        State {
+            name: "hover"
+            when: control.enabled && control.isFocused && !control.isPressed
+            PropertyChanges {
+                target: control
+                opacity: 1.0
+            }
         }
-
     ]
 
     transitions: Transition {
-        NumberAnimation { properties: scale; easing.type: Easing.InOutQuad; duration: 200 }
-        NumberAnimation { properties: opacity; easing.type: Easing.InOutQuad; duration: 200 }
+        NumberAnimation {
+            properties: scale
+            easing.type: Easing.InOutQuad
+            duration: 200
+        }
+        NumberAnimation {
+            properties: opacity
+            easing.type: Easing.InOutQuad
+            duration: 200
+        }
     }
 
     MouseArea {
@@ -112,7 +136,6 @@ Item {
         onClicked: {
             control.focus = true
             control.clicked()
-
         }
         onReleased: {
             control.focus = true
@@ -125,42 +148,42 @@ Item {
         }
 
         onHoveredChanged: {
-            control.state == 'hover' ? control.state ="":control.state ='hover'
+            control.state == 'hover' ? control.state = "" : control.state = 'hover'
         }
-
     }
     // ----- Signal handler
     onStateChanged: {
+
         // console.log("State: " + state);
     }
 
     Component.onCompleted: {
         console.log("Name of first state:", states[0].name)
-        for (var i = 0; i < states.length; i++){
+        for (var i = 0; i < states.length; i++) {
             console.log("state", i, states[i].name)
         }
     }
     // ----- Visual children.
-    Image{
-        id:outlineImage
+    Image {
+        id: outlineImage
         fillMode: Image.PreserveAspectFit
         source: outLineSource
     }
 
-    Image{
-        id:inlineImage
+    Image {
+        id: inlineImage
         source: inLineSource
         fillMode: Image.PreserveAspectFit
     }
 
-    ClickWave{
+    ClickWave {
         id: clickWave
 
-        width:  Math.max( control.width, control.height )
+        width: Math.max(control.width, control.height)
         height: width
 
-        pressX:     control.pressX
-        pressY:     control.pressY
+        pressX: control.pressX
+        pressY: control.pressY
         wave_color: control.waveColor
     }
 }

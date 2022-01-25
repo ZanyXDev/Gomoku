@@ -50,6 +50,7 @@ RESOURCES += \
 #win32: RC_ICONS = res/icons/five_in_a_row-qt.ico # On Windows
 #macx: ICON = res/icons/five_in_a_row-qt.ico # On Mac OSX
 
+
 QMAKE_CFLAGS += $$(QMAKE_CFLAGS_ENV)
 QMAKE_CXXFLAGS += $$(QMAKE_CXXFLAGS_ENV)
 QMAKE_LFLAGS += $$(QMAKE_LFLAGS_ENV)
@@ -113,7 +114,6 @@ android {
             android/source/res/values/libs.xml \
             android/source/res/values/strings.xml \
             android/source/res/values/styles.xml \
-            android/source/res/xml/backup_content.xml \
-            android/source/src/io/github/zanyxdev/gomoku/GomokuActivity.java
+            android/source/res/xml/backup_content.xml
 }
 
