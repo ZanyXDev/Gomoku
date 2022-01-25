@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <manifest package="io.github.zanyxdev" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1" android:versionCode="1" android:installLocation="auto">
-<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="30"/>
+<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="30"/>
 <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:xlargeScreens="true"/>
 
 <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
