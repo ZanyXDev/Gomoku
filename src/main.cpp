@@ -30,6 +30,19 @@ void createAppConfigFolder()
     }
 }
 
+const QString getAppFont(){
+    QStringList font_families;
+    int id = QFontDatabase::addApplicationFont(":/res/fonts/China.ttf");
+
+    if(id != -1){
+        font_families = QFontDatabase::applicationFontFamilies(id);
+    }else{
+        QFont font;
+        font_families << font.defaultFamily();
+    }
+    return font_families.first();
+}
+
 int main(int argc, char *argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -38,9 +51,6 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setApplicationName("Gomoku");
     QCoreApplication::setApplicationVersion(
                 QString("%1-%2[%3]").arg(VERSION).arg(GIT_HASH).arg(GIT_BRANCH));
-
-    ///TODO set default app font
-    // QFontDatabase::addApplicationFont("qrc:/font/HoboStd.otf");
 
     QGuiApplication app(argc, argv);
     /*!
@@ -151,6 +161,7 @@ int main(int argc, char *argv[]) {
     context->setContextProperty("pt", 1);
     context->setContextProperty("dp", scale);
     context->setContextProperty("isMobile",isMobile);
+    context->setContextProperty("font_families",getAppFont() );
 
     QObject::connect(
                 &engine, &QQmlApplicationEngine::objectCreated, &app,
