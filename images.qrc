@@ -8,5 +8,8 @@
         <file>res/images/outline_volume_up_black_24dp.png</file>
         <file>res/images/outline_button.png</file>
         <file>res/images/inline_button.png</file>
+        <file>res/images/infopanel.png</file>
+        <file>res/images/i_star.png</file>
+        <file>res/images/b_star.png</file>
     </qresource>
 </RCC>
