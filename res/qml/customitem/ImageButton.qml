@@ -30,7 +30,7 @@ import QtGraphicalEffects 1.0
 
 Item {
     id: control
-
+    //  anchors.fill: parent
     // ----- Property Declarations
     property alias text: cmdName.text
     property alias textColor: cmdName.color
@@ -59,8 +59,6 @@ Item {
     opacity: 0.8
     clip: true
     smooth: true
-    width: outlineImage.implicitWidth
-    height: outlineImage.implicitHeight
 
     layer.enabled: true
     layer.effect: DropShadow {
@@ -129,11 +127,8 @@ Item {
         id: mouseArea
 
         anchors.fill: parent
-
         cursorShape: Qt.PointingHandCursor
-
         hoverEnabled: true
-
         acceptedButtons: Qt.LeftButton
 
         onPressed: {
@@ -167,20 +162,25 @@ Item {
     // ----- Visual children.
     Image {
         id: outlineImage
+         width: control.width
+         height: control.height
         fillMode: Image.PreserveAspectFit
         source: outLineSource
     }
 
     Image {
         id: inlineImage
+
+        width: control.width
+        height: control.height
+
         source: inLineSource
         fillMode: Image.PreserveAspectFit
         Text {
             id: cmdName
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            text: "OK"
-
+            // text: "OK"
         }
     }
 
