@@ -63,7 +63,6 @@ Item {
 
     layer.enabled: true
     layer.effect: DropShadow {
-        anchors.fill: control
         horizontalOffset: 3
         verticalOffset: 4
         radius: 5
