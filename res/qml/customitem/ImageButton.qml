@@ -45,9 +45,10 @@ Item {
     property string inLineSource: string
 
     property color waveColor: "#55c9c9c9"
+    property color shadowColor: "black"
+
     property real pressX: 0.0
     property real pressY: 0.0
-    property color shadowColor: "black"
 
     // ----- Signal declarations
     signal pressed
@@ -163,12 +164,6 @@ Item {
         // console.log("State: " + state);
     }
 
-    Component.onCompleted: {
-        console.log("Name of first state:", states[0].name)
-        for (var i = 0; i < states.length; i++) {
-            console.log("state", i, states[i].name)
-        }
-    }
     // ----- Visual children.
     Image {
         id: outlineImage
@@ -198,5 +193,13 @@ Item {
         pressX: control.pressX
         pressY: control.pressY
         wave_color: control.waveColor
+    }
+
+    Component.onCompleted: {
+        console.log("H:" + control.height + " W:" + control.width)
+        //        console.log("Name of first state:", states[0].name)
+        //        for (var i = 0; i < states.length; i++) {
+        //            console.log("state", i, states[i].name)
+        //        }
     }
 }
