@@ -32,11 +32,18 @@ Item {
     id: control
 
     // ----- Property Declarations
+    property alias text: cmdName.text
+    property alias textColor: cmdName.color
+    property alias textFontFamily: cmdName.font.family
+    property alias textFontPointSize: cmdName.font.pointSize
+
     property bool enabled: true
     property bool isFocused: activeFocus || mouseArea.containsMouse
     property bool isPressed: mouseArea.pressed
+
     property string outLineSource: string
     property string inLineSource: string
+
     property color waveColor: "#55c9c9c9"
     property real pressX: 0.0
     property real pressY: 0.0
@@ -174,6 +181,13 @@ Item {
         id: inlineImage
         source: inLineSource
         fillMode: Image.PreserveAspectFit
+        Text {
+            id: cmdName
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: "OK"
+
+        }
     }
 
     ClickWave {
