@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
                    density >= 320 ? 2 :
                    density >= 240 ? 1.5 : 1;
 #ifdef QT_DEBUG
-    scale = 1.5;
+    scale = 1.75;
 #endif
 ///TODO release https://code.qt.io/cgit/qt/qtandroidextras.git/tree/examples/androidextras/customactivity?h=5.15
     QQmlApplicationEngine engine;
