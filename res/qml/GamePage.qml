@@ -85,13 +85,28 @@ Item {
                     Layout.preferredWidth:  62 * dp
                     Layout.preferredHeight: 62 * dp
                     ImageButton{
-                        id: startBtn
+                        id: settingsBtn
                         width:  62 * dp
                         height:  62 * dp
 
-                        outLineSource: "qrc:/res/images/b_star.png"
-                        inLineSource: "qrc:/res/images/i_star.png"
-                        MyDebugRect{}
+                        outLineSource: "qrc:/res/images/sq_out_button.png"
+                        inLineSource: "qrc:/res/images/sq_in_button.png"
+                        onClicked: {
+                            console.log("settingsBtn clicked")
+
+                            var component = Qt.createComponent("SettingsPage.qml");
+
+                            if (component.status === Component.Ready) {
+                                var object = component.createObject(null);
+
+                                mainStackView.push(object);
+                            } else {
+                                console.error(component.errorString());
+                            }
+
+                        }
+
+                        // MyDebugRect{}
                     }
                 }
             }
@@ -107,23 +122,7 @@ Item {
 
                     text:"[H:"+parent.height+",W:"+parent.width+"]"
                 }
-                //                ImageButton{
-                //                    id:imgButton
 
-                //                    outLineSource:  "qrc:/res/images/outline_button.png"
-                //                    inLineSource:  "qrc:/res/images/inline_button.png"
-                //                    enabled: true
-                //                    text:"Test"
-                //                    textColor: "red"
-
-                //                    textFontFamily: font_families
-                //                    textFontPointSize:14
-
-                //                    onClicked:
-                //                    {
-                //                        console.log( "image button clicked" );
-                //                    }
-                //                }
             }
         }
         ProportionalRect {

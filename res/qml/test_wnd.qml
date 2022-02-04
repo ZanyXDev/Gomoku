@@ -6,79 +6,6 @@ import QtGraphicalEffects 1.0
 
 import "customitem"
 import io.github.zanyxdev 1.0
-/**
-Window{
-    visible: true
-    visibility:  (isMobile) ? Window.FullScreen : Window.Windowed
-    title: qsTr("Gomoku")
-    width:  320 * dp
-    height: 480 * dp
-
-    Image {
-        source:  "qrc:/res/images/b_star.png"
-        width: 64
-        height: 64
-        Image {
-            source:  "qrc:/res/images/i_star.png"
-            width: 64
-            height: 64
-        }
-
-
-    }
-
-    Item {
-        id: button
-        width: 64
-        height: 64
-        property alias text: innerText.text
-        signal clicked
-
-        layer.enabled: true
-        layer.effect: DropShadow {
-            horizontalOffset: 3
-            verticalOffset: 4
-            radius: 5
-            samples: 11
-            color: "black"
-            opacity: 0.75
-        }
-
-        Image {
-            id: backgroundImage
-            anchors.fill: parent
-            source: (button.enabled ? "qrc:/res/images/b_star.png" : "qrc:/res/images/b_star.png")
-        }
-        Image {
-            id: foregroundImage
-            anchors.fill: parent
-            source: (button.enabled ? "qrc:/res/images/i_star.png" : "qrc:/res/images/i_star.png")
-        }
-
-        Text {
-            id: innerText
-            anchors.centerIn: parent
-            color: "white"
-            font.bold: true
-            text:"OK"
-        }
-
-        //Mouse area to react on click events
-        MouseArea {
-            anchors.fill: button
-            onClicked: { button.clicked();}
-            onPressed: {
-                foregroundImage.scale =0.7
-            }
-            onReleased: {
-                foregroundImage.scale =1.0
-            }
-        }
-    }
-
-
-}
-*/
 
 QQC2.ApplicationWindow {
     id:appWnd
@@ -107,6 +34,7 @@ QQC2.ApplicationWindow {
     onScreenOrientationChanged: {
         screenOrientationUpdated(screenOrientation);
     }
+
     Component.onCompleted: {
         var component = Qt.createComponent("GamePage.qml");
 
@@ -117,16 +45,68 @@ QQC2.ApplicationWindow {
         }
     }
     // ----- Visual children.
-    QQC2.StackView {
+    QQC2.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      StackView {
         id:           mainStackView
         anchors.fill: parent
+        focus:true
 
         MultiPointTouchArea {
             anchors.fill: parent
             z:            1
             enabled:      mainStackView.busy
         }
+        // Настройка механизма перехода между страницами
+        delegate: StackViewDelegate {
+            // Настройка анимации перехода
+            pushTransition: StackViewTransition {
+
+                // Для упрощения анимация отключена
+                // Данное место переопределяет
+                // стандартную анимацию с полупрозрачностью
+                // Пример анимации с уменьшением масштаба - она лучше
+                // стандартного перехода прозрачности,
+                // так как нет наложения картинок, которое медленно рендерится
+
+
+                PropertyAnimation {
+                    target: enterItem
+                    property: "scale"
+                    from: 0
+                    to: 1
+                }
+                PropertyAnimation {
+                    target: exitItem
+                    property: "scale"
+                    from: 1
+                    to: 0
+                }
+
+            }
+
+        }
+        Keys.onReleased: {
+            if (event.key === Qt.Key_Back) {
+                pageBack(event)
+                console.log("Qt.Key_Back Released")
+            }
+        }
+
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Escape){
+                pageBack(event)
+                console.log("Qt.Key_Escape pressed")
+            }
+        }
+        // ----- JavaScript functions
+        // Обработка нажатия кнопки выхода с текущей страницы
+        function pageBack(event) {
+            if( mainStackView.depth > 1 ) {
+                mainStackView.pop()
+                event.accepted = true
+            }
+        }
     }
+
     Image {
         id: backGround
         z: -1
@@ -144,18 +124,7 @@ QQC2.ApplicationWindow {
     }
 
     // ----- JavaScript functions
-//    ImageButton{
-//        id:imgButton
-//        // width: 200
-//        //height: 176
+    // Обработка нажатия кнопки выхода с текущей страницы
 
-//        outLineSource:  "qrc:/res/images/outline_button.png"
-//        inLineSource:  "qrc:/res/images/inline_button.png"
-//        enabled: true
-//        onClicked:
-//        {
-//            console.log( "image button clicked" );
-//        }
-//    }
 }
 

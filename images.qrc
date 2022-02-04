@@ -11,5 +11,7 @@
         <file>res/images/infopanel.png</file>
         <file>res/images/i_star.png</file>
         <file>res/images/b_star.png</file>
+        <file>res/images/sq_in_button.png</file>
+        <file>res/images/sq_out_button.png</file>
     </qresource>
 </RCC>
